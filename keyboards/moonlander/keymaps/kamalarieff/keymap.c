@@ -96,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRANSPARENT, LGUI_T(KC_A),   LALT_T(KC_S),   LCTL_T(KC_D),   LSFT_T(KC_F),   KC_G,           DYN_REC_STOP,                                                                   DYN_REC_STOP,   KC_H,           RSFT_T(KC_J),   LCTL_T(KC_K),   LALT_T(KC_L),   LGUI_T(KC_QUOTE),KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_Z,           KC_X,           TD(DANCE_0),    TD(DANCE_1),    KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, LALT(KC_RIGHT), LALT(KC_LEFT),  LT(3,KC_ESCAPE),KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, LT(6,KC_DELETE),LALT(KC_LEFT),  LALT(KC_RIGHT), KC_TRANSPARENT, KC_TRANSPARENT, 
-    LT(1,KC_SPACE), LT(2,KC_TAB),   PLOVER_ON,                         KC_TRANSPARENT, LT(5,KC_ENTER), LT(4,KC_BSPACE)
+    LT(1,KC_SPACE), LT(2,KC_TAB),   PLOVER_ON,                      KC_TRANSPARENT, LT(5,KC_ENTER), LT(4,KC_BSPACE)
   ),
   [1] = LAYOUT_moonlander(
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
