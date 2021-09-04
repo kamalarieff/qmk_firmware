@@ -74,19 +74,22 @@ enum combos {
   IO_LEFT_BRACKET,
   OP_RIGHT_BRACKET,
   COMMADOT_EQUAL,
-  ZX_SEMICOLON
+  ZX_SEMICOLON,
+  MCOMMA_SEMICOLON
 };
 
 const uint16_t PROGMEM io_combo[] = {KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM op_combo[] = {KC_O, KC_P, COMBO_END};
 const uint16_t PROGMEM commadot_combo[] = {KC_COMMA, KC_DOT, COMBO_END};
 const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMMA, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   [IO_LEFT_BRACKET] = COMBO(io_combo, KC_LBRACKET),
   [OP_RIGHT_BRACKET] = COMBO(op_combo, KC_RBRACKET),
   [COMMADOT_EQUAL] = COMBO(commadot_combo, KC_EQUAL),
-  [ZX_SEMICOLON] = COMBO(zx_combo, KC_SCOLON)
+  [ZX_SEMICOLON] = COMBO(zx_combo, KC_SCOLON),
+  [MCOMMA_SEMICOLON] = COMBO(mcomma_combo, KC_SCOLON)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
