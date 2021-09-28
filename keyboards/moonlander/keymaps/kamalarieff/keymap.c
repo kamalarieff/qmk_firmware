@@ -53,6 +53,7 @@ enum custom_keycodes {
   HSV_0_255_255,
   PLOVER_ON,
   PLOVER_OFF,
+  PLOVER_LOOKUP,
   LEFT_MONITOR,
   RIGHT_MONITOR,
   NEXT_DESKTOP,
@@ -176,7 +177,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,          KC_1,           KC_2,           KC_3,           KC_4,           KC_5,           KC_NO,                                          KC_NO,          KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_NO,          
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,                                          TO(0),          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_LBRACKET,    
     KC_TRANSPARENT, KC_A,           KC_S,           KC_D,           KC_F,           KC_TRANSPARENT, KC_NO,                                                                          KC_ASTG,        KC_TRANSPARENT, KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_QUOTE,       
-    KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          PLOVER_LOOKUP,                                  KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_C,           KC_V,           KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_N,           KC_M,           KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, PLOVER_OFF,                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
   ),
@@ -330,6 +331,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case RIGHT_MONITOR:
       if (record->event.pressed) {
           SEND_STRING(SS_LCTL(";f"));
+      }
+      return false;
+    case PLOVER_LOOKUP:
+      if (record->event.pressed) {
+        register_code(KC_E);
+        register_code(KC_R);
+        register_code(KC_F);
+        register_code(KC_C);
+        register_code(KC_V);
+        register_code(KC_K);
+        register_code(KC_L);
+      } else {
+        unregister_code(KC_E);
+        unregister_code(KC_R);
+        unregister_code(KC_F);
+        unregister_code(KC_C);
+        unregister_code(KC_V);
+        unregister_code(KC_K);
+        unregister_code(KC_L);
       }
       return false;
     case PLOVER_ON:
