@@ -13,18 +13,6 @@
 #define USB_SUSPEND_WAKEUP_DELAY 0
 
 
-/* #undef MOUSEKEY_INTERVAL
-#define MOUSEKEY_INTERVAL 16
-
-#undef MOUSEKEY_DELAY
-#define MOUSEKEY_DELAY 20
-
-#undef MOUSEKEY_MAX_SPEED
-#define MOUSEKEY_MAX_SPEED 14
-
-#undef MOUSEKEY_TIME_TO_MAX
-#define MOUSEKEY_TIME_TO_MAX 50 */
-
 // Use constant speed for mouse keys
 #define MK_3_SPEED
 
