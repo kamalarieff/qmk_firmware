@@ -37,3 +37,5 @@
 
 #define COMBO_COUNT 5
 #define COMBO_TERM 30
+
+#define LEADER_TIMEOUT 300
