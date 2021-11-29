@@ -362,6 +362,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     case PLOVER_ON:
       if (record->event.pressed) {
+        register_code(KC_LCTRL);
+        register_code(KC_LSHIFT);
+        register_code(KC_LALT);
+        register_code(KC_W);
+        unregister_code(KC_W);
+        unregister_code(KC_LALT);
+        unregister_code(KC_LSHIFT);
+        unregister_code(KC_LCTRL);
         // You have to do this in order to trigger Plover
         register_code(KC_Q);
         register_code(KC_W);
