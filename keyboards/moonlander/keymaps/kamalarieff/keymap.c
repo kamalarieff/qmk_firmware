@@ -61,6 +61,8 @@ enum custom_keycodes {
   SWITCH_APPS,
   TOGGL,
   KEYNAV,
+  ARROW,
+  BRACES,
 };
 
 
@@ -157,8 +159,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // shifted number layer
   [5] = LAYOUT_moonlander(
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
-    KC_TRANSPARENT, KC_LCBR,        KC_AMPR,        KC_ASTR,        KC_LPRN,        KC_RCBR,        KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, 
-    KC_TRANSPARENT, KC_COLN,        KC_DLR,         KC_PERC,        KC_CIRC,        KC_PLUS,        KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_NO,          KC_LSHIFT,      KC_LCTRL,       KC_LALT,        KC_LGUI,        KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_LCBR,        ARROW,          BRACES,         KC_LPRN,        KC_RCBR,        KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_COLN,        KC_DLR,         KC_PERC,        KC_CIRC,        KC_PLUS,        KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO,          KC_LSHIFT,      KC_LCTRL,       KC_LALT,        KC_LGUI,        KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TILD,        KC_EXLM,        KC_AT,          KC_HASH,        KC_PIPE,                                        KC_NO,          KC_NO,          KC_NO,          KC_RALT,        KC_NO,          KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_LPRN,        KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
     KC_RPRN,        KC_UNDS,        KC_NO,                          KC_TRANSPARENT, KC_TRANSPARENT, KC_NO
@@ -317,7 +319,43 @@ void rgb_matrix_indicators_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  // Get current mod and one-shot mod states.
+  uint8_t mods = get_mods();
+  uint8_t oneshot_mods = get_oneshot_mods();
+  // https://www.reddit.com/r/ergodox/comments/qhp3sd/sharing_neat_configuration_tricks/
+  // This is the macro for inserting brackets
+  // SEND_STRING(SS_TAP(X_LBRACKET) SS_DELAY(100) SS_TAP(X_RBRACKET) SS_DELAY(100) SS_TAP(X_LEFT));
   switch (keycode) {
+    // https://getreuer.info/posts/keyboards/macros/
+    case BRACES:  // Types [], {}, or <> and puts cursor between braces.
+      if (record->event.pressed) {
+        clear_mods();  // Temporarily disable mods.
+        clear_oneshot_mods();
+        if ((mods | oneshot_mods) & MOD_MASK_SHIFT) {
+          SEND_STRING("{}");
+        } else if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+          SEND_STRING("<>");
+        } else if ((mods | oneshot_mods) & MOD_MASK_ALT) {
+          SEND_STRING("()");
+        } else {
+          SEND_STRING("[]");
+        }
+        tap_code(KC_LEFT);  // Move cursor between braces.
+        set_mods(mods);  // Restore mods.
+      }
+      return false;
+    case ARROW:  // Arrow macro, types -> or =>.
+      if (record->event.pressed) {
+        if ((mods | oneshot_mods) & MOD_MASK_SHIFT) {  // Is shift held?
+          del_mods(MOD_MASK_SHIFT);  // Temporarily delete shift.
+          del_oneshot_mods(MOD_MASK_SHIFT);
+          SEND_STRING("=>");
+          set_mods(mods);            // Restore mods.
+        } else {
+          SEND_STRING("->");
+        }
+      }
+      return false;
     case KEYNAV:
       if (record->event.pressed) {
           SEND_STRING(SS_LCTL("`"));
