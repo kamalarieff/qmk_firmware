@@ -6,7 +6,9 @@
 #undef TAPPING_TERM
 #define TAPPING_TERM 191
 
-#define PERMISSIVE_HOLD
+// https://www.reddit.com/r/olkb/comments/qu7vd8/taphold_settings_for_fast_typers/
+#define IGNORE_MOD_TAP_INTERRUPT
+#undef PERMISSIVE_HOLD
 
 #define TAPPING_FORCE_HOLD
 
