@@ -105,10 +105,10 @@ combo_t key_combos[COMBO_COUNT] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // base
   [0] = LAYOUT_moonlander(
-    TG(8),          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_MEH,         DYN_REC_START1,                                 DYN_REC_START2, KC_HYPR,        TG(10),         TG(11),         KC_TRANSPARENT, KC_TRANSPARENT, TO(7),          
-    KC_LEAD,        KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           DYN_MACRO_PLAY1,                                DYN_MACRO_PLAY2,KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_TRANSPARENT, 
+    TG(8),          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_MEH,         DYN_REC_START1,                                 DYN_REC_START2, KC_HYPR,        KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TO(7),          
+    KC_LEAD,        KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,           DYN_MACRO_PLAY1,                                DYN_MACRO_PLAY2,KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSPACE, 
     KC_TRANSPARENT, LGUI_T(KC_A),   LALT_T(KC_S),   LCTL_T(KC_D),   LSFT_T(KC_F),   KC_G,           DYN_REC_STOP,                                                                   DYN_REC_STOP,   KC_H,           RSFT_T(KC_J),   LCTL_T(KC_K),   LALT_T(KC_L),   LGUI_T(KC_QUOTE),KC_TRANSPARENT, 
-    KC_TRANSPARENT, KC_Z,           KC_X,           TD(DANCE_0),    TD(DANCE_1),    KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, LALT(KC_RIGHT), LALT(KC_LEFT),  LT(3,KC_ESCAPE),KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, LT(6,KC_DELETE),LALT(KC_LEFT),  LALT(KC_RIGHT), KC_TRANSPARENT, KC_TRANSPARENT, 
     LT(1,KC_SPACE), LT(2,KC_TAB),   PLOVER_ON,                      KC_TRANSPARENT, LT(5,KC_ENTER), LT(4,KC_BSPACE)
   ),
