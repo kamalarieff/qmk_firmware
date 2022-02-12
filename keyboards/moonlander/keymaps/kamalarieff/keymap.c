@@ -492,6 +492,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_E);
         unregister_code(KC_R);
         combo_enable();
+        layer_off(_COLEMAKDH);
         layer_off(_PLOVER);
       }
       return false;
