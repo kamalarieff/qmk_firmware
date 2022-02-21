@@ -454,6 +454,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_V);
         unregister_code(KC_K);
         unregister_code(KC_L);
+
+        register_code(KC_Q);
+        register_code(KC_W);
+        register_code(KC_E);
+        register_code(KC_R);
+
+        unregister_code(KC_Q);
+        unregister_code(KC_W);
+        unregister_code(KC_E);
+        unregister_code(KC_R);
+         
+        layer_on(_COLEMAKDH);
+        layer_off(_PLOVER);
       }
       return false;
     case PLOVER_ON:
@@ -477,6 +490,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_E);
         unregister_code(KC_R);
         combo_disable();
+        layer_off(_COLEMAKDH);
         layer_on(_PLOVER);
       }
       return false;
@@ -492,7 +506,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_E);
         unregister_code(KC_R);
         combo_enable();
-        layer_off(_COLEMAKDH);
+        layer_on(_COLEMAKDH);
         layer_off(_PLOVER);
       }
       return false;
