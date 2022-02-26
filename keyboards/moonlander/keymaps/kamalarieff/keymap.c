@@ -118,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LEAD,              KC_Q,                KC_W,            KC_E,           KC_R,                      KC_T,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_Y,                KC_U,                  KC_I,                  KC_O,                KC_P,             KC_BSPACE, 
     TO(_QWERTY),          LGUI_T(KC_A),        LALT_T(KC_S),    LCTL_T(KC_D),   LSFT_T(KC_F),              KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_H,                RSFT_T(KC_J),          LCTL_T(KC_K),          LALT_T(KC_L),        LGUI_T(KC_QUOTE), _______, 
     TO(_COLEMAKDH),       KC_Z,                KC_X,            KC_C,           KC_V,                      KC_B,                                                 KC_N,                KC_M,                  KC_COMMA,              KC_DOT,              KC_SLASH,         _______, 
-    _______,              _______,             LALT(KC_RIGHT),  LALT(KC_LEFT),  LT(_ADDITIONAL,KC_ESCAPE), _______,                                              _______,             LT(_FN,KC_DELETE),     LALT(KC_LEFT),         LALT(KC_RIGHT),      _______,          _______, 
+    TOGGLE_LAYOUT,        _______,             LALT(KC_RIGHT),  LALT(KC_LEFT),  LT(_ADDITIONAL,KC_ESCAPE), _______,                                              _______,             LT(_FN,KC_DELETE),     LALT(KC_LEFT),         LALT(KC_RIGHT),      _______,          _______, 
     LT(_ARROW,KC_SPACE),  LT(_MOUSE,KC_TAB),   PLOVER_ON,                                                                                                        _______,             LT(_SYMBOL,KC_ENTER),  LT(_NUMBER,KC_BSPACE)
   ),
   // colemak-dh
@@ -324,6 +324,8 @@ void rgb_matrix_indicators_user(void) {
   }
 }
 
+bool is_colemak_on = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Get current mod and one-shot mod states.
   uint8_t mods = get_mods();
@@ -332,6 +334,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // This is the macro for inserting brackets
   // SEND_STRING(SS_TAP(X_LBRACKET) SS_DELAY(100) SS_TAP(X_RBRACKET) SS_DELAY(100) SS_TAP(X_LEFT));
   switch (keycode) {
+    case TOGGLE_LAYOUT:  // Types () and puts cursor between parens.
+      if (record->event.pressed) {
+        if (is_colemak_on) {
+            layer_on(_QWERTY);
+            layer_off(_COLEMAKDH);
+            is_colemak_on = false;
+        } else {
+            layer_on(_COLEMAKDH);
+            layer_off(_QWERTY);
+            is_colemak_on = true;
+        }
+      }
+      return false;
     // https://getreuer.info/posts/keyboards/macros/
     case BRACES:  // Types [], {}, or <> and puts cursor between braces.
       if (record->event.pressed) {
