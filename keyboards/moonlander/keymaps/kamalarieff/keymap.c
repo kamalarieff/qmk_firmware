@@ -57,6 +57,8 @@
 #define _ARROW_LHAND 10
 #define _GAMING 11
 
+bool is_colemak_on = false;
+
 enum custom_keycodes {
   PLOVER_ON = ML_SAFE_RANGE,
   PLOVER_OFF,
@@ -72,6 +74,7 @@ enum custom_keycodes {
   BRACES,
   PARENS,
   DELETE_BRACES,
+  TOGGLE_LAYOUT,
 };
 
 
@@ -93,23 +96,41 @@ enum combos {
   IO_LEFT_BRACKET,
   OP_RIGHT_BRACKET,
   COMMADOT_EQUAL,
-  ZX_SEMICOLON,
+  XC_TOGGLE,
   MCOMMA_SEMICOLON
 };
 
 const uint16_t PROGMEM io_combo[] = {KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM op_combo[] = {KC_O, KC_P, COMBO_END};
 const uint16_t PROGMEM commadot_combo[] = {KC_COMMA, KC_DOT, COMBO_END};
-const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMMA, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   [IO_LEFT_BRACKET] = COMBO(io_combo, KC_LBRACKET),
   [OP_RIGHT_BRACKET] = COMBO(op_combo, KC_RBRACKET),
   [COMMADOT_EQUAL] = COMBO(commadot_combo, KC_EQUAL),
-  [ZX_SEMICOLON] = COMBO(zx_combo, KC_SCOLON),
-  [MCOMMA_SEMICOLON] = COMBO(mcomma_combo, KC_SCOLON)
+  [XC_TOGGLE] = COMBO_ACTION(xc_combo),
+  [MCOMMA_SEMICOLON] = COMBO(mcomma_combo, KC_SCOLON),
 };
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+  switch(combo_index) {
+    case XC_TOGGLE:
+      if (pressed) {
+        if (is_colemak_on) {
+            layer_on(_QWERTY);
+            layer_off(_COLEMAKDH);
+            is_colemak_on = false;
+        } else {
+            layer_on(_COLEMAKDH);
+            layer_off(_QWERTY);
+            is_colemak_on = true;
+        }
+      }
+      break;
+  }
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // qwerty
@@ -324,8 +345,6 @@ void rgb_matrix_indicators_user(void) {
   }
 }
 
-bool is_colemak_on = false;
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Get current mod and one-shot mod states.
   uint8_t mods = get_mods();
@@ -392,6 +411,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     case KC_ESCAPE:
       if (record->event.pressed) {
+        is_colemak_on = false;
         layer_off(_COLEMAKDH);
         tap_code(KC_ESCAPE);
       }
