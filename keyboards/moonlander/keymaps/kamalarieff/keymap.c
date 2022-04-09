@@ -96,50 +96,99 @@ enum combos {
   IO_LEFT_BRACKET,
   OP_RIGHT_BRACKET,
   COMMADOT_EQUAL,
+  CV_TOGGLE,
+  CD_TOGGLE,
   XC_TOGGLE,
-  MCOMMA_SEMICOLON
+  GB_TOGGLE,
+  GV_TOGGLE,
+  MCOMMA_SEMICOLON,
+  // HCOMMA_SEMICOLON
 };
 
 const uint16_t PROGMEM io_combo[] = {KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM op_combo[] = {KC_O, KC_P, COMBO_END};
 const uint16_t PROGMEM commadot_combo[] = {KC_COMMA, KC_DOT, COMBO_END};
+const uint16_t PROGMEM cv_combo[] = {KC_C, KC_V, COMBO_END};
+const uint16_t PROGMEM cd_combo[] = {KC_C, KC_D, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM gb_combo[] = {KC_G, KC_B, COMBO_END};
+const uint16_t PROGMEM gv_combo[] = {KC_G, KC_V, COMBO_END};
 const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMMA, COMBO_END};
+// const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
+// const uint16_t PROGMEM ysemicolon_combo[] = {KC_Y, KC_SCLN, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   [IO_LEFT_BRACKET] = COMBO(io_combo, KC_LBRACKET),
   [OP_RIGHT_BRACKET] = COMBO(op_combo, KC_RBRACKET),
   [COMMADOT_EQUAL] = COMBO(commadot_combo, KC_EQUAL),
+  [CV_TOGGLE] = COMBO_ACTION(cv_combo),
+  [CD_TOGGLE] = COMBO_ACTION(cd_combo),
   [XC_TOGGLE] = COMBO_ACTION(xc_combo),
+  [GB_TOGGLE] = COMBO_ACTION(gb_combo),
+  [GV_TOGGLE] = COMBO_ACTION(gv_combo),
   [MCOMMA_SEMICOLON] = COMBO(mcomma_combo, KC_SCOLON),
 };
 
+uint16_t get_combo_term(uint16_t index, combo_t *combo) {
+    switch (index) {
+        case CV_TOGGLE:
+        case CD_TOGGLE:
+        case XC_TOGGLE:
+            return 200;
+    }
+
+    return COMBO_TERM;
+}
+
 void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
-    case XC_TOGGLE:
+    case CV_TOGGLE:
+    case CD_TOGGLE:
+    case GV_TOGGLE:
       if (pressed) {
-        if (is_colemak_on) {
-            layer_on(_QWERTY);
-            layer_off(_COLEMAKDH);
-            is_colemak_on = false;
-        } else {
-            layer_on(_COLEMAKDH);
-            layer_off(_QWERTY);
-            is_colemak_on = true;
-        }
+        // if (is_colemak_on) {
+        //     layer_on(_QWERTY);
+        //     layer_off(_COLEMAKDH);
+        //     is_colemak_on = false;
+        // } else {
+        //     layer_on(_COLEMAKDH);
+        //     layer_off(_QWERTY);
+        //     is_colemak_on = true;
+        // }
+        layer_off(_QWERTY);
+        layer_on(_COLEMAKDH);
+        is_colemak_on = true;
+        // if (layer_state_is(_QWERTY)) {
+        //     layer_off(_QWERTY);
+        //     layer_on(_COLEMAKDH);
+        //     is_colemak_on = true;
+        // } else if (layer_state_is(_COLEMAKDH)) {
+        //     layer_off(_COLEMAKDH);
+        //     layer_on(_QWERTY);
+        //     is_colemak_on = false;
+        // }
+      }
+      break;
+    case XC_TOGGLE:
+    case GB_TOGGLE:
+      if (pressed) {
+        layer_on(_QWERTY);
+        layer_off(_COLEMAKDH);
+        is_colemak_on = false;
       }
       break;
   }
 }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+  // the reason I reverted this again and again is because it's hard to make it work with bspwm
   // qwerty
   [_QWERTY] = LAYOUT_moonlander(
-    _______,              _______,             _______,         _______,        _______,                   KC_MEH,         DYN_REC_START1,     DYN_REC_START2,   KC_HYPR,             _______,               _______,               _______,             _______,          TO(_GAMING),          
-    KC_LEAD,              KC_Q,                KC_W,            KC_E,           KC_R,                      KC_T,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_Y,                KC_U,                  KC_I,                  KC_O,                KC_P,             KC_BSPACE, 
-    TO(_QWERTY),          LGUI_T(KC_A),        LALT_T(KC_S),    LCTL_T(KC_D),   LSFT_T(KC_F),              KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_H,                RSFT_T(KC_J),          LCTL_T(KC_K),          LALT_T(KC_L),        LGUI_T(KC_QUOTE), _______, 
-    TO(_COLEMAKDH),       KC_Z,                KC_X,            KC_C,           KC_V,                      KC_B,                                                 KC_N,                KC_M,                  KC_COMMA,              KC_DOT,              KC_SLASH,         _______, 
-    TOGGLE_LAYOUT,        _______,             LALT(KC_RIGHT),  LALT(KC_LEFT),  LT(_ADDITIONAL,KC_ESCAPE), _______,                                              _______,             LT(_FN,KC_DELETE),     LALT(KC_LEFT),         LALT(KC_RIGHT),      _______,          _______, 
+    _______,              _______,             _______,         _______,        _______,                   KC_MEH,         DYN_REC_START1,     DYN_REC_START2,   KC_HYPR,             _______,               _______,               _______,             _______,          TO(_GAMING),         
+    KC_LEAD,              KC_Q,                KC_W,            KC_E,           KC_R,                      KC_T,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_Y,                KC_U,                  KC_I,                  KC_O,                KC_P,             KC_BSPACE,
+    TO(_QWERTY),          LGUI_T(KC_A),        LALT_T(KC_S),    LCTL_T(KC_D),   LSFT_T(KC_F),              KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_H,                RSFT_T(KC_J),          LCTL_T(KC_K),          LALT_T(KC_L),        LGUI_T(KC_QUOTE), _______,
+    TOGGLE_LAYOUT,        KC_Z,                KC_X,            KC_C,           KC_V,                      KC_B,                                                 KC_N,                KC_M,                  KC_COMMA,              KC_DOT,              KC_SLASH,         _______,
+    _______,              _______,             LALT(KC_RIGHT),  LALT(KC_LEFT),  LT(_ADDITIONAL,KC_ESCAPE), _______,                                              _______,             LT(_FN,KC_DELETE),     LALT(KC_LEFT),         LALT(KC_RIGHT),      _______,          _______,
     LT(_ARROW,KC_SPACE),  LT(_MOUSE,KC_TAB),   PLOVER_ON,                                                                                                        _______,             LT(_SYMBOL,KC_ENTER),  LT(_NUMBER,KC_BSPACE)
   ),
   // colemak-dh base
@@ -153,11 +202,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ),
   // colemak-dh
   [_COLEMAKDH] = LAYOUT_moonlander(
-    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,          
-    TO(_QWERTY),          KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           _______,            _______,          KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_SCLN,           _______, 
-    _______,              LGUI_T(KC_A),        LALT_T(KC_R),    LCTL_T(KC_S),   LSFT_T(KC_T),              KC_G,           _______,            _______,          KC_M,                RSFT_T(KC_N),          LCTL_T(KC_E),          LALT_T(KC_I),        LGUI_T(KC_O),      KC_QUOTE, 
-    _______,              KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,          _______, 
-    _______,              _______,             _______,         _______,        KC_ESCAPE,                 _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,         
+    TO(_QWERTY),          KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           _______,            _______,          KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_SCLN,           _______,
+    _______,              LGUI_T(KC_A),        LALT_T(KC_R),    LCTL_T(KC_S),   LSFT_T(KC_T),              KC_G,           _______,            _______,          KC_M,                RSFT_T(KC_N),          LCTL_T(KC_E),          LALT_T(KC_I),        LGUI_T(KC_O),      KC_QUOTE,
+    TOGGLE_LAYOUT,        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,          _______,
+    _______,              _______,             _______,         _______,        KC_ESCAPE,                 _______,                                              _______,             _______,               _______,               _______,             _______,           _______,
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
   // // qwerty new
