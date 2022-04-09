@@ -422,15 +422,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case TOGGLE_LAYOUT:  // Types () and puts cursor between parens.
       if (record->event.pressed) {
-        if (is_colemak_on) {
-            layer_on(_QWERTY);
-            layer_off(_COLEMAKDH);
-            is_colemak_on = false;
-        } else {
-            layer_on(_COLEMAKDH);
+        if (layer_state_is(_QWERTY)) {
             layer_off(_QWERTY);
+            layer_on(_COLEMAKDH);
             is_colemak_on = true;
+        } else if (layer_state_is(_COLEMAKDH)) {
+            layer_off(_COLEMAKDH);
+            layer_on(_QWERTY);
+            is_colemak_on = false;
         }
+        // if (is_colemak_on) {
+        //     layer_on(_QWERTY);
+        //     layer_off(_COLEMAKDH);
+        //     is_colemak_on = false;
+        // } else {
+        //     layer_on(_COLEMAKDH);
+        //     layer_off(_QWERTY);
+        //     is_colemak_on = true;
+        // }
       }
       return false;
     // https://getreuer.info/posts/keyboards/macros/
