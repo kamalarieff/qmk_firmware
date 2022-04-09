@@ -142,6 +142,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TOGGLE_LAYOUT,        _______,             LALT(KC_RIGHT),  LALT(KC_LEFT),  LT(_ADDITIONAL,KC_ESCAPE), _______,                                              _______,             LT(_FN,KC_DELETE),     LALT(KC_LEFT),         LALT(KC_RIGHT),      _______,          _______, 
     LT(_ARROW,KC_SPACE),  LT(_MOUSE,KC_TAB),   PLOVER_ON,                                                                                                        _______,             LT(_SYMBOL,KC_ENTER),  LT(_NUMBER,KC_BSPACE)
   ),
+  // colemak-dh base
+  // [_COLEMAKDH] = LAYOUT_moonlander(
+  //   _______,              _______,             _______,         _______,        _______,                   KC_MEH,         DYN_REC_START1,     DYN_REC_START2,   KC_HYPR,             _______,               _______,               _______,             _______,          TO(_GAMING),          
+  //   KC_LEAD,              KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         KC_BSPACE, 
+  //   TO(_COLEMAKDH),       LGUI_T(KC_A),        LALT_T(KC_R),    LCTL_T(KC_S),   LSFT_T(KC_T),              KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                RSFT_T(KC_N),          LCTL_T(KC_E),          LALT_T(KC_I),        LGUI_T(KC_O),     KC_QUOTE, 
+  //   TO(_COLEMAKDH),       KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         _______, 
+  //   TOGGLE_LAYOUT,        _______,             LALT(KC_RIGHT),  LALT(KC_LEFT),  TD(DANCE_0),               _______,                                              _______,             LT(_FN,KC_DELETE),     LALT(KC_LEFT),         LALT(KC_RIGHT),      _______,          _______, 
+  //   LT(_ARROW,KC_SPACE),  LT(_MOUSE,KC_TAB),   PLOVER_ON,                                                                                                        _______,             LT(_SYMBOL,KC_ENTER),  LT(_NUMBER,KC_BSPACE)
+  // ),
   // colemak-dh
   [_COLEMAKDH] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,          
@@ -151,6 +160,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,              _______,             _______,         _______,        KC_ESCAPE,                 _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
+  // // qwerty new
+  // [_QWERTY] = LAYOUT_moonlander(
+  //   _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,          
+  //   TO(_COLEMAKDH),       KC_Q,                KC_W,            KC_E,           KC_R,                      KC_T,           _______,            _______,          KC_Y,                KC_U,                  KC_I,                  KC_O,                KC_P,              _______, 
+  //   _______,              LGUI_T(KC_A),        LALT_T(KC_S),    LCTL_T(KC_D),   LSFT_T(KC_F),              KC_G,           _______,            _______,          KC_H,                RSFT_T(KC_J),          LCTL_T(KC_K),          LALT_T(KC_L),        LGUI_T(KC_QUOTE),  _______, 
+  //   _______,              KC_Z,                KC_X,            KC_C,           KC_V,                      KC_B,                                                 KC_N,                KC_M,                  KC_COMMA,              KC_DOT,              KC_SLASH,          _______, 
+  //   _______,              _______,             _______,         _______,        KC_ESCAPE,                 _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+  //   _______,              _______,             _______,                                                                                                          _______,             _______,               _______
+  // ),
   // arrow keys
   [_ARROW] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
