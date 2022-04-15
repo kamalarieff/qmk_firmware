@@ -75,6 +75,7 @@ enum custom_keycodes {
   PARENS,
   DELETE_BRACES,
   TOGGLE_LAYOUT,
+  LTAP_ADDITIONAL_ESCAPE,
 };
 
 
@@ -206,7 +207,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TO(_QWERTY),          KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           _______,            _______,          KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_SCLN,           _______,
     _______,              LGUI_T(KC_A),        LALT_T(KC_R),    LCTL_T(KC_S),   LSFT_T(KC_T),              KC_G,           _______,            _______,          KC_M,                RSFT_T(KC_N),          LCTL_T(KC_E),          LALT_T(KC_I),        LGUI_T(KC_O),      KC_QUOTE,
     TOGGLE_LAYOUT,        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,          _______,
-    _______,              _______,             _______,         _______,        KC_ESCAPE,                 _______,                                              _______,             _______,               _______,               _______,             _______,           _______,
+    _______,              _______,             _______,         _______,        LTAP_ADDITIONAL_ESCAPE,    _______,                                              _______,             _______,               _______,               _______,             _______,           _______,
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
   // // qwerty new
@@ -412,6 +413,8 @@ void rgb_matrix_indicators_user(void) {
   }
 }
 
+uint16_t key_timer;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Get current mod and one-shot mod states.
   uint8_t mods = get_mods();
@@ -485,11 +488,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         tap_code(KC_DELETE);  // Move cursor between braces.
       }
       return false;
-    case KC_ESCAPE:
+    case LTAP_ADDITIONAL_ESCAPE:
       if (record->event.pressed) {
-        is_colemak_on = false;
-        layer_off(_COLEMAKDH);
-        tap_code(KC_ESCAPE);
+        key_timer = timer_read();
+        layer_on(_ADDITIONAL);
+      } else {
+        layer_off(_ADDITIONAL);
+        if (timer_elapsed(key_timer) < TAPPING_TERM) {
+          layer_off(_COLEMAKDH);
+          tap_code(KC_ESCAPE);
+        }
       }
       return false;
     case KEYNAV:
