@@ -635,18 +635,8 @@ uint8_t dance_step(qk_tap_dance_state_t *state) {
 }
 
 
-// void on_dance_0(qk_tap_dance_state_t *state, void *user_data);
 void dance_0_finished(qk_tap_dance_state_t *state, void *user_data);
 void dance_0_reset(qk_tap_dance_state_t *state, void *user_data);
-
-// void on_dance_0(qk_tap_dance_state_t *state, void *user_data) {
-//     if(state->count == 1) {
-//         tap_code16(KC_C);
-//     }
-//     if(state->count > 3) {
-//         tap_code16(KC_C);
-//     }
-// }
 
 void dance_0_finished(qk_tap_dance_state_t *state, void *user_data) {
     dance_state[0].step = dance_step(state);
