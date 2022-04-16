@@ -57,8 +57,6 @@
 #define _ARROW_LHAND 10
 #define _GAMING 11
 
-bool is_colemak_on = false;
-
 enum custom_keycodes {
   PLOVER_ON = ML_SAFE_RANGE,
   PLOVER_OFF,
@@ -147,27 +145,8 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
     case CD_TOGGLE:
     case GV_TOGGLE:
       if (pressed) {
-        // if (is_colemak_on) {
-        //     layer_on(_QWERTY);
-        //     layer_off(_COLEMAKDH);
-        //     is_colemak_on = false;
-        // } else {
-        //     layer_on(_COLEMAKDH);
-        //     layer_off(_QWERTY);
-        //     is_colemak_on = true;
-        // }
         layer_off(_QWERTY);
         layer_on(_COLEMAKDH);
-        is_colemak_on = true;
-        // if (layer_state_is(_QWERTY)) {
-        //     layer_off(_QWERTY);
-        //     layer_on(_COLEMAKDH);
-        //     is_colemak_on = true;
-        // } else if (layer_state_is(_COLEMAKDH)) {
-        //     layer_off(_COLEMAKDH);
-        //     layer_on(_QWERTY);
-        //     is_colemak_on = false;
-        // }
       }
       break;
     case XC_TOGGLE:
@@ -175,7 +154,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       if (pressed) {
         layer_on(_QWERTY);
         layer_off(_COLEMAKDH);
-        is_colemak_on = false;
       }
       break;
   }
@@ -428,21 +406,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (layer_state_is(_QWERTY)) {
             layer_off(_QWERTY);
             layer_on(_COLEMAKDH);
-            is_colemak_on = true;
         } else if (layer_state_is(_COLEMAKDH)) {
             layer_off(_COLEMAKDH);
             layer_on(_QWERTY);
-            is_colemak_on = false;
         }
-        // if (is_colemak_on) {
-        //     layer_on(_QWERTY);
-        //     layer_off(_COLEMAKDH);
-        //     is_colemak_on = false;
-        // } else {
-        //     layer_on(_COLEMAKDH);
-        //     layer_off(_QWERTY);
-        //     is_colemak_on = true;
-        // }
       }
       return false;
     // https://getreuer.info/posts/keyboards/macros/
