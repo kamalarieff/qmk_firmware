@@ -98,8 +98,6 @@ enum combos {
   CV_TOGGLE,
   CD_TOGGLE,
   XC_TOGGLE,
-  GB_TOGGLE,
-  GV_TOGGLE,
   MCOMMA_SEMICOLON,
   // HCOMMA_SEMICOLON
 };
@@ -110,8 +108,6 @@ const uint16_t PROGMEM commadot_combo[] = {KC_COMMA, KC_DOT, COMBO_END};
 const uint16_t PROGMEM cv_combo[] = {KC_C, KC_V, COMBO_END};
 const uint16_t PROGMEM cd_combo[] = {KC_C, KC_D, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM gb_combo[] = {KC_G, KC_B, COMBO_END};
-const uint16_t PROGMEM gv_combo[] = {KC_G, KC_V, COMBO_END};
 const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMMA, COMBO_END};
 // const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
 // const uint16_t PROGMEM ysemicolon_combo[] = {KC_Y, KC_SCLN, COMBO_END};
@@ -123,8 +119,6 @@ combo_t key_combos[COMBO_COUNT] = {
   [CV_TOGGLE] = COMBO_ACTION(cv_combo),
   [CD_TOGGLE] = COMBO_ACTION(cd_combo),
   [XC_TOGGLE] = COMBO_ACTION(xc_combo),
-  [GB_TOGGLE] = COMBO_ACTION(gb_combo),
-  [GV_TOGGLE] = COMBO_ACTION(gv_combo),
   [MCOMMA_SEMICOLON] = COMBO(mcomma_combo, KC_SCOLON),
 };
 
@@ -143,14 +137,12 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
     case CV_TOGGLE:
     case CD_TOGGLE:
-    case GV_TOGGLE:
       if (pressed) {
         layer_off(_QWERTY);
         layer_on(_COLEMAKDH);
       }
       break;
     case XC_TOGGLE:
-    case GB_TOGGLE:
       if (pressed) {
         layer_on(_QWERTY);
         layer_off(_COLEMAKDH);
