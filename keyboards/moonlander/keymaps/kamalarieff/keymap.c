@@ -455,6 +455,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         tap_code(KC_DELETE);  // Move cursor between braces.
       }
       return false;
+    // https://www.reddit.com/r/olkb/comments/afm9ii/qmk_macro_in_modtap_keys/
     case LTAP_ADDITIONAL_ESCAPE:
       if (record->event.pressed) {
         key_timer = timer_read();
