@@ -1011,6 +1011,9 @@ void matrix_scan_user(void) {
     leading = false;
     leader_end();
 
+    SEQ_ONE_KEY(KC_Q) {
+      layer_on(_NUMBER);
+    }
     SEQ_ONE_KEY(KC_W) {
       layer_on(_BROWSER);
     }
