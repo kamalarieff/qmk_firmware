@@ -480,7 +480,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     case SWITCH_APPS:
       if (record->event.pressed) {
-          SEND_STRING(SS_LALT("`"));
+          SEND_STRING(SS_LGUI("`"));
       }
       return false;
     case PREV_DESKTOP:
@@ -539,10 +539,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         register_code(KC_LCTRL);
         register_code(KC_LSHIFT);
-        register_code(KC_LALT);
+        register_code(KC_LGUI);
         register_code(KC_W);
         unregister_code(KC_W);
-        unregister_code(KC_LALT);
+        unregister_code(KC_LGUI);
         unregister_code(KC_LSHIFT);
         unregister_code(KC_LCTRL);
         // You have to do this in order to trigger Plover
