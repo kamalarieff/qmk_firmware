@@ -139,13 +139,17 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
 void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
     case CV_TOGGLE:
-    case CD_TOGGLE:
       if (pressed) {
         layer_off(_QWERTY);
         layer_on(_COLEMAKDH);
       }
       break;
     case XC_TOGGLE:
+      if (pressed) {
+        tap_code16(C(KC_A));
+      }
+      break;
+    case CD_TOGGLE:
       if (pressed) {
         layer_on(_QWERTY);
         layer_off(_COLEMAKDH);
