@@ -74,6 +74,7 @@ enum custom_keycodes {
   DELETE_BRACES,
   TOGGLE_LAYOUT,
   LTAP_ADDITIONAL_ESCAPE,
+  TMUX_ALT_TAB,
 };
 
 
@@ -212,7 +213,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // number layer
   [_NUMBER] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              KC_LBRACKET,         KC_7,            KC_8,           KC_9,                      KC_RBRACKET,    _______,            _______,          XXXXXXX,             XXXXXXX,               XXXXXXX,               XXXXXXX,             _______,           _______, 
+    _______,              KC_LBRACKET,         KC_7,            KC_8,           KC_9,                      KC_RBRACKET,    _______,            _______,          XXXXXXX,             LCTL(KC_A),            TMUX_ALT_TAB,          XXXXXXX,             _______,           _______, 
     _______,              KC_SCOLON,           KC_4,            KC_5,           KC_6,                      KC_EQUAL,       _______,            _______,          KC_BSPACE,           _______,               _______,               _______,             _______,           _______, 
     _______,              KC_GRAVE,            KC_1,            KC_2,           KC_3,                      KC_BSLASH,                                            XXXXXXX,             XXXXXXX,               XXXXXXX,               XXXXXXX,             _______,           _______, 
     _______,              _______,             _______,         _______,        KC_DOT,                    _______,                                              _______,             XXXXXXX,               _______,               _______,             _______,           _______, 
@@ -460,6 +461,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           layer_off(_QWERTY);
           tap_code(KC_ESCAPE);
         }
+      }
+      return false;
+    case TMUX_ALT_TAB:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("a") SS_LCTL("a"));
       }
       return false;
     case KEYNAV:
