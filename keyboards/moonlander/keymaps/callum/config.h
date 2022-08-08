@@ -4,7 +4,7 @@
 */
 #define ORYX_CONFIGURATOR
 #undef TAPPING_TERM
-#define TAPPING_TERM 160
+#define TAPPING_TERM 200
 
 // https://www.reddit.com/r/olkb/comments/qu7vd8/taphold_settings_for_fast_typers/
 #define IGNORE_MOD_TAP_INTERRUPT
@@ -70,7 +70,7 @@
 #define FIRMWARE_VERSION u8"7B4by/mJeJm"
 #define RGB_MATRIX_STARTUP_SPD 60
 
-#define COMBO_COUNT 8
+#define COMBO_COUNT 1
 #define COMBO_TERM 30
 
 #undef LEADER_NO_TIMEOUT
