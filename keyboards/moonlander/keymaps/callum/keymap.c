@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
+#include "oneshot.h"
 #include "keymap_german.h"
 #include "keymap_nordic.h"
 #include "keymap_french.h"
@@ -43,6 +44,8 @@
 #define LSA_T(kc) MT(MOD_LSFT | MOD_LALT, kc)
 #define BP_NDSH_MAC ALGR(KC_8)
 #define MOON_LED_LEVEL LED_LEVEL
+#define LA_SYM MO(_SYMBOL)
+#define LA_NAV MO(_ARROW)
 
 #define _COLEMAKDH 0
 #define _SYMBOL 1
@@ -71,6 +74,10 @@ enum custom_keycodes {
   TOGGLE_LAYOUT,
   LTAP_ADDITIONAL_ESCAPE,
   TMUX_ALT_TAB,
+  OS_SHFT,
+  OS_CTRL,
+  OS_ALT,
+  OS_CMD
 };
 
 enum tap_dance_codes {
@@ -102,14 +109,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LEAD,              KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         KC_BSPACE,
     TO(_COLEMAKDH),       KC_A,                KC_R,            KC_S,           KC_T,                      KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                KC_N,                  KC_E,                  KC_I,                KC_O,             _______,
     TOGGLE_LAYOUT,        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         LCTL(KC_A),
-    _______,              _______,             _______,         _______,        MO(_ARROW),                _______,                                              _______,             MO(_SYMBOL),           _______,               _______,             _______,          _______,
+    _______,              _______,             _______,         _______,        LA_NAV,                    _______,                                              _______,             LA_SYM,                _______,               _______,             _______,          _______,
     KC_SPACE,             _______,             PLOVER_ON,                                                                                                        _______,             _______,               KC_BSPACE
   ),
   // symbol layer
   [_SYMBOL] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              KC_TAB,              KC_LBRACKET,     KC_LCBR,        XXXXXXX,                   KC_TILD,        _______,            _______,          KC_PIPE,             LSFT(KC_SCOLON),       KC_RCBR,               KC_RBRACKET,         KC_GRAVE,          _______, 
-    _______,              KC_MINUS,            KC_PLUS,         KC_EQUAL,       KC_UNDS,                   KC_SLASH,       _______,            _______,          KC_BSLASH,           OSM(MOD_LSFT),         OSM(MOD_LCTL),         OSM(MOD_LALT),       OSM(MOD_LGUI),     _______, 
+    _______,              KC_MINUS,            KC_PLUS,         KC_EQUAL,       KC_UNDS,                   KC_SLASH,       _______,            _______,          KC_BSLASH,           OS_SHFT,               OS_CTRL,               OS_ALT,              OS_CMD,            _______, 
     _______,              KC_EXLM,             KC_AT,           KC_HASH,        KC_DLR,                    KC_PERC,                                              KC_CIRC,             KC_AMPR,               KC_ASTERISK,           KC_LPRN,             KC_RPRN,           _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
@@ -118,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ARROW] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              KC_ESCAPE,           LEFT_MONITOR,    _______,        RIGHT_MONITOR,             _______,        _______,            _______,          RESET,               LSFT(KC_INSERT),       LCTL(KC_INSERT),       KC_CAPSLOCK,         KC_DELETE,         _______, 
-    _______,              OSM(MOD_LGUI),       OSM(MOD_LALT),   OSM(MOD_LCTL),  OSM(MOD_LSFT),             _______,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            XXXXXXX,           _______,
+    _______,              OS_CMD,              OS_ALT,          OS_CTRL,        OS_SHFT,                   _______,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            XXXXXXX,           _______,
     _______,              SWITCH_APPS,         LGUI(KC_TAB),    _______,        _______,                   _______,                                              KC_HOME,             KC_PGDOWN,             KC_PGUP,               KC_END,              KC_ENTER,          _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
@@ -127,7 +134,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_FN] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              KC_F1,               KC_F2,           KC_F3,          KC_F4,                     KC_F5,          _______,            _______,          KC_F6,               KC_F7,                 KC_F8,                 KC_F9,               KC_F10,            _______, 
-    _______,              OSM(MOD_LGUI),       OSM(MOD_LALT),   OSM(MOD_LCTL),  OSM(MOD_LSFT),             KC_F11,         _______,            _______,          KC_F12,              OSM(MOD_LSFT),         OSM(MOD_LCTL),         OSM(MOD_LALT),       OSM(MOD_LGUI),     _______, 
+    _______,              OS_CMD,              OS_ALT,          OS_CTRL,        OS_SHFT,                   KC_F11,         _______,            _______,          KC_F12,              OS_SHFT,               OS_CTRL,               OS_ALT,              OS_CMD,            _______, 
     _______,              KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,                                                 KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,              _______,
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
@@ -252,6 +259,36 @@ void rgb_matrix_indicators_user(void) {
 }
 
 uint16_t key_timer;
+
+bool is_oneshot_cancel_key(uint16_t keycode) {
+    switch (keycode) {
+    case LA_SYM:
+    case LA_NAV:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool is_oneshot_ignored_key(uint16_t keycode) {
+    switch (keycode) {
+    case LA_SYM:
+    case LA_NAV:
+    case KC_LSFT:
+    case OS_SHFT:
+    case OS_CTRL:
+    case OS_ALT:
+    case OS_CMD:
+        return true;
+    default:
+        return false;
+    }
+}
+
+oneshot_state os_shft_state = os_up_unqueued;
+oneshot_state os_ctrl_state = os_up_unqueued;
+oneshot_state os_alt_state = os_up_unqueued;
+oneshot_state os_cmd_state = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Get current mod and one-shot mod states.
@@ -419,6 +456,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
   }
+
+  update_oneshot(
+      &os_shft_state, KC_LSFT, OS_SHFT,
+      keycode, record
+  );
+  update_oneshot(
+      &os_ctrl_state, KC_LCTL, OS_CTRL,
+      keycode, record
+  );
+  update_oneshot(
+      &os_alt_state, KC_LALT, OS_ALT,
+      keycode, record
+  );
+  update_oneshot(
+      &os_cmd_state, KC_LGUI, OS_CMD,
+      keycode, record
+  );
   return true;
 }
 
