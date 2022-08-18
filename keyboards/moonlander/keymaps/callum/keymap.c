@@ -161,22 +161,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
-  // need to think about this. there was a post about designing your symbol layer. maybe it's better to have a layer dedicated for symbols but i'm not sure about the reasoning
-  // [_SYMBOL] = LAYOUT_moonlander(
-  //   _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-  //   _______,              KC_TAB,              KC_7,            KC_8,           KC_9,                      KC_LBRACKET,    _______,            _______,          KC_RBRACKET,         LSFT(KC_SCOLON),       _______,               _______,             KC_GRAVE,          _______, 
-  //   _______,              KC_MINUS,            KC_4,            KC_5,           KC_6,                      _______,        _______,            _______,          _______,             OS_SHFT,               OS_CTRL,               OS_ALT,              OS_CMD,            _______, 
-  //   _______,              KC_EQUAL,            KC_1,            KC_2,           KC_3,                      KC_0,                                                 _______,             _______,               _______,               _______,             KC_BSLASH,         _______, 
-  //   _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
-  //   _______,              _______,             _______,                                                                                                          _______,             _______,               _______
-  // ),
-  // you can try setting home row mods here
+  // homerow mods with numbers and symbols layer
   [_HR_NUM_SYM] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              KC_EXLM,             KC_AT,           KC_LBRACKET,    KC_RBRACKET,               KC_PIPE,        _______,            _______,          XXXXXXX,             KC_7,                  KC_8,                  KC_9,                KC_ASTERISK,       _______, 
-    _______,              LGUI_T(KC_HASH),     LALT_T(KC_DLR),  LCTL_T(KC_LPRN),LSFT_T(KC_RPRN),           KC_GRAVE,       _______,            _______,          KC_AMPR,             LSFT_T(KC_4),          LCTL_T(KC_5),          LALT_T(KC_6),        LGUI_T(KC_PLUS),   _______, 
-    _______,              KC_PERC,             KC_CIRC,         KC_LCBR,        KC_RCBR,                   KC_TILD,                                              KC_0,                KC_1,                  KC_2,                  KC_3,                KC_BSLASH,         _______, 
-    _______,              _______,             _______,         _______,        TO(_COLEMAKDH),            _______,                                              _______,             TO(_COLEMAKDH),        _______,               _______,             _______,           _______, 
+    _______,              KC_TAB,              KC_7,            KC_8,           KC_9,                      KC_PIPE,        _______,            _______,          XXXXXXX,             KC_LBRACKET,           KC_RBRACKET,           PARENS,              _______,           _______, 
+    _______,              LGUI_T(KC_SCOLON),   LALT_T(KC_4),    LCTL_T(KC_5),   LSFT_T(KC_6),              KC_EQUAL,       _______,            _______,          KC_BSPACE,           LSFT_T(KC_LPRN),       LCTL_T(KC_RPRN),       KC_LALT,             KC_LGUI,           _______, 
+    _______,              KC_GRAVE,            KC_1,            KC_2,           KC_3,                      KC_BSLASH,                                            XXXXXXX,             KC_LCBR,               KC_RCBR,               XXXXXXX,             KC_ENTER,          _______, 
+    _______,              _______,             _______,         KC_0,           TO(_COLEMAKDH),            _______,                                              _______,             TO(_COLEMAKDH),        _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
   // plover layer
@@ -480,24 +471,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_PLOVER);
       }
       return false;
-    case LGUI_T(KC_HASH):
-      if (record->tap.count && record->event.pressed) {
-          tap_code16(KC_HASH); // Send KC_HASH on tap
-          return false;        // Return false to ignore further processing of key
-      }
-    case LALT_T(KC_DLR):
-      if (record->tap.count && record->event.pressed) {
-          tap_code16(KC_DLR); // Send KC_DLR on tap
-          return false;        // Return false to ignore further processing of key
-      }
-    case LCTL_T(KC_LPRN):
-      if (record->tap.count && record->event.pressed) {
-          tap_code16(KC_LPRN); // Send KC_LPRN on tap
-          return false;        // Return false to ignore further processing of key
-      }
-    case LSFT_T(KC_RPRN):
+    case LCTL_T(KC_RPRN):
       if (record->tap.count && record->event.pressed) {
           tap_code16(KC_RPRN); // Send KC_RPRN on tap
+          return false;        // Return false to ignore further processing of key
+      }
+    case LSFT_T(KC_LPRN):
+      if (record->tap.count && record->event.pressed) {
+          tap_code16(KC_LPRN); // Send KC_LPRN on tap
           return false;        // Return false to ignore further processing of key
       }
   }
