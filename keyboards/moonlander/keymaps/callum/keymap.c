@@ -28,22 +28,6 @@
 #include "keymap_belgian.h"
 #include "keymap_us_international.h"
 
-#define KC_MAC_UNDO LGUI(KC_Z)
-#define KC_MAC_CUT LGUI(KC_X)
-#define KC_MAC_COPY LGUI(KC_C)
-#define KC_MAC_PASTE LGUI(KC_V)
-#define KC_PC_UNDO LCTL(KC_Z)
-#define KC_PC_CUT LCTL(KC_X)
-#define KC_PC_COPY LCTL(KC_C)
-#define KC_PC_PASTE LCTL(KC_V)
-#define ES_LESS_MAC KC_GRAVE
-#define ES_GRTR_MAC LSFT(KC_GRAVE)
-#define ES_BSLS_MAC ALGR(KC_6)
-#define NO_PIPE_ALT KC_GRAVE
-#define NO_BSLS_ALT KC_EQUAL
-#define LSA_T(kc) MT(MOD_LSFT | MOD_LALT, kc)
-#define BP_NDSH_MAC ALGR(KC_8)
-#define MOON_LED_LEVEL LED_LEVEL
 #define LA_SYM MO(_SYMBOL)
 #define LA_NAV MO(_ARROW)
 
@@ -51,10 +35,13 @@
 #define _SYMBOL 1
 #define _ARROW 2
 #define _FN 3
-#define _PLOVER 4
-#define _BROWSER 5
-#define _ARROW_LHAND 6
-#define _GAMING 7
+#define _MACROS 4
+#define _DESKTOP 5
+#define _HR_NUM_SYM 6
+#define _PLOVER 7
+#define _BROWSER 8
+#define _ARROW_LHAND 9
+#define _GAMING 10
 
 enum custom_keycodes {
   PLOVER_ON = ML_SAFE_RANGE,
@@ -62,17 +49,12 @@ enum custom_keycodes {
   PLOVER_LOOKUP,
   LEFT_MONITOR,
   RIGHT_MONITOR,
-  NEXT_DESKTOP,
-  PREV_DESKTOP,
   SWITCH_APPS,
-  TOGGL,
   KEYNAV,
   ARROW,
   BRACES,
   PARENS,
   DELETE_BRACES,
-  TOGGLE_LAYOUT,
-  LTAP_ADDITIONAL_ESCAPE,
   TMUX_ALT_TAB,
   OS_SHFT,
   OS_CTRL,
@@ -92,15 +74,37 @@ enum tap_dance_codes {
   DANCE_10,
 };
 
-enum combos {
-  HCOMMA_SEMICOLON
+enum combo {
+  HCOMMA_SEMICOLON,
+  SPACEBSPACE_LAYER_SWITCH,
 };
 
 const uint16_t PROGMEM hcomma_combo[] = {KC_H, KC_COMMA, COMBO_END};
+const uint16_t PROGMEM spacebspace_combo[] = {KC_SPACE, KC_BSPACE, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   [HCOMMA_SEMICOLON] = COMBO(hcomma_combo, KC_SCOLON),
+  [SPACEBSPACE_LAYER_SWITCH] = COMBO_ACTION(spacebspace_combo),
 };
+
+uint16_t get_combo_term(uint16_t index, combo_t *combo) {
+    switch (index) {
+        case SPACEBSPACE_LAYER_SWITCH:
+            return 200;
+    }
+
+    return COMBO_TERM;
+}
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+  switch(combo_index) {
+    case SPACEBSPACE_LAYER_SWITCH:
+      if (pressed) {
+        layer_on(_HR_NUM_SYM);
+      }
+      break;
+  }
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // colemak-dh base
@@ -108,8 +112,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,              _______,             _______,         _______,        _______,                   KC_MEH,         DYN_REC_START1,     DYN_REC_START2,   KC_HYPR,             _______,               _______,               _______,             _______,          TO(_GAMING),         
     KC_LEAD,              KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         KC_BSPACE,
     TO(_COLEMAKDH),       KC_A,                KC_R,            KC_S,           KC_T,                      KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                KC_N,                  KC_E,                  KC_I,                KC_O,             _______,
-    TOGGLE_LAYOUT,        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         LCTL(KC_A),
-    _______,              _______,             _______,         _______,        LA_NAV,                    _______,                                              _______,             LA_SYM,                _______,               _______,             _______,          _______,
+    _______,              KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         LCTL(KC_A),
+    _______,              _______,             _______,         OSL(_DESKTOP),  LA_NAV,                    _______,                                              _______,             LA_SYM,                OSL(_MACROS),          _______,             _______,          _______,
     KC_SPACE,             _______,             PLOVER_ON,                                                                                                        _______,             _______,               KC_BSPACE
   ),
   // symbol layer
@@ -124,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // arrow keys
   [_ARROW] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              KC_ESCAPE,           LEFT_MONITOR,    _______,        RIGHT_MONITOR,             _______,        _______,            _______,          RESET,               LSFT(KC_INSERT),       LCTL(KC_INSERT),       KC_CAPSLOCK,         KC_DELETE,         _______, 
+    _______,              KC_ESCAPE,           LEFT_MONITOR,    _______,        RIGHT_MONITOR,             _______,        _______,            _______,          _______,             LSFT(KC_INSERT),       LCTL(KC_INSERT),       KC_CAPSLOCK,         KC_DELETE,         _______, 
     _______,              OS_CMD,              OS_ALT,          OS_CTRL,        OS_SHFT,                   _______,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            XXXXXXX,           _______,
     _______,              SWITCH_APPS,         LGUI(KC_TAB),    _______,        _______,                   _______,                                              KC_HOME,             KC_PGDOWN,             KC_PGUP,               KC_END,              KC_ENTER,          _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
@@ -137,6 +141,42 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,              OS_CMD,              OS_ALT,          OS_CTRL,        OS_SHFT,                   KC_F11,         _______,            _______,          KC_F12,              OS_SHFT,               OS_CTRL,               OS_ALT,              OS_CMD,            _______, 
     _______,              KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,                                                 KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,              _______,
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,                                                                                                          _______,             _______,               _______
+  ),
+  // macros layer
+  [_MACROS] = LAYOUT_moonlander(
+    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             ARROW,           BRACES,         PARENS,                    _______,        _______,            _______,          _______,             XXXXXXX,               XXXXXXX,               XXXXXXX,             _______,           _______, 
+    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          DELETE_BRACES,       _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,                                                                                                          _______,             _______,               _______
+  ),
+  // desktops layer
+  [_DESKTOP] = LAYOUT_moonlander(
+    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             LGUI(KC_7),      LGUI(KC_8),     LGUI(KC_9),                _______,        _______,            _______,          XXXXXXX,             ARROW,                 BRACES,                PARENS,              _______,           _______, 
+    _______,              _______,             LGUI(KC_4),      LGUI(KC_5),     LGUI(KC_6),                _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             LGUI(KC_1),      LGUI(KC_2),     LGUI(KC_3),                _______,                                              XXXXXXX,             XXXXXXX,               XXXXXXX,               XXXXXXX,             _______,           _______, 
+    _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,                                                                                                          _______,             _______,               _______
+  ),
+  // need to think about this. there was a post about designing your symbol layer. maybe it's better to have a layer dedicated for symbols but i'm not sure about the reasoning
+  // [_SYMBOL] = LAYOUT_moonlander(
+  //   _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
+  //   _______,              KC_TAB,              KC_7,            KC_8,           KC_9,                      KC_LBRACKET,    _______,            _______,          KC_RBRACKET,         LSFT(KC_SCOLON),       _______,               _______,             KC_GRAVE,          _______, 
+  //   _______,              KC_MINUS,            KC_4,            KC_5,           KC_6,                      _______,        _______,            _______,          _______,             OS_SHFT,               OS_CTRL,               OS_ALT,              OS_CMD,            _______, 
+  //   _______,              KC_EQUAL,            KC_1,            KC_2,           KC_3,                      KC_0,                                                 _______,             _______,               _______,               _______,             KC_BSLASH,         _______, 
+  //   _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+  //   _______,              _______,             _______,                                                                                                          _______,             _______,               _______
+  // ),
+  // you can try setting home row mods here
+  [_HR_NUM_SYM] = LAYOUT_moonlander(
+    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              KC_EXLM,             KC_AT,           KC_LBRACKET,    KC_RBRACKET,               KC_PIPE,        _______,            _______,          XXXXXXX,             KC_7,                  KC_8,                  KC_9,                KC_ASTERISK,       _______, 
+    _______,              LGUI_T(KC_HASH),     LALT_T(KC_DLR),  LCTL_T(KC_LPRN),LSFT_T(KC_RPRN),           KC_GRAVE,       _______,            _______,          KC_AMPR,             LSFT_T(KC_4),          LCTL_T(KC_5),          LALT_T(KC_6),        LGUI_T(KC_PLUS),   _______, 
+    _______,              KC_PERC,             KC_CIRC,         KC_LCBR,        KC_RCBR,                   KC_TILD,                                              KC_0,                KC_1,                  KC_2,                  KC_3,                KC_BSLASH,         _______, 
+    _______,              _______,             _______,         _______,        TO(_COLEMAKDH),            _______,                                              _______,             TO(_COLEMAKDH),        _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
   // plover layer
@@ -352,24 +392,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_LCTL("`"));
       }
       return false;
-    case TOGGL:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LGUI("4"));
-      }
-      return false;
     case SWITCH_APPS:
       if (record->event.pressed) {
           SEND_STRING(SS_LGUI("`"));
-      }
-      return false;
-    case PREV_DESKTOP:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LGUI("["));
-      }
-      return false;
-    case NEXT_DESKTOP:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LGUI("]"));
       }
       return false;
     case LEFT_MONITOR:
@@ -455,6 +480,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_PLOVER);
       }
       return false;
+    case LGUI_T(KC_HASH):
+      if (record->tap.count && record->event.pressed) {
+          tap_code16(KC_HASH); // Send KC_HASH on tap
+          return false;        // Return false to ignore further processing of key
+      }
+    case LALT_T(KC_DLR):
+      if (record->tap.count && record->event.pressed) {
+          tap_code16(KC_DLR); // Send KC_DLR on tap
+          return false;        // Return false to ignore further processing of key
+      }
+    case LCTL_T(KC_LPRN):
+      if (record->tap.count && record->event.pressed) {
+          tap_code16(KC_LPRN); // Send KC_LPRN on tap
+          return false;        // Return false to ignore further processing of key
+      }
+    case LSFT_T(KC_RPRN):
+      if (record->tap.count && record->event.pressed) {
+          tap_code16(KC_RPRN); // Send KC_RPRN on tap
+          return false;        // Return false to ignore further processing of key
+      }
   }
 
   update_oneshot(
