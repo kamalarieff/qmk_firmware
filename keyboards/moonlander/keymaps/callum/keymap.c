@@ -42,6 +42,7 @@
 #define _BROWSER 8
 #define _ARROW_LHAND 9
 #define _GAMING 10
+#define IDLE_TIMEOUT_MS 1000
 
 enum custom_keycodes {
   PLOVER_ON = ML_SAFE_RANGE,
@@ -321,7 +322,13 @@ oneshot_state os_ctrl_state = os_up_unqueued;
 oneshot_state os_alt_state = os_up_unqueued;
 oneshot_state os_cmd_state = os_up_unqueued;
 
+static uint16_t idle_timer = 0;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  // https://www.reddit.com/r/olkb/comments/wrgv05/can_i_prevent_hold_action_for_taphold_keys_unless/#
+  // https://getreuer.info/posts/keyboards/triggers/index.html
+  idle_timer = (record->event.time + IDLE_TIMEOUT_MS) | 1;
+
   // Get current mod and one-shot mod states.
   uint8_t mods = get_mods();
   uint8_t oneshot_mods = get_oneshot_mods();
@@ -873,6 +880,12 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 LEADER_EXTERNS();
 
 void matrix_scan_user(void) {
+  if (idle_timer && timer_expired(timer_read(), idle_timer)) {
+    // If execution reaches here, the keyboard has gone idle.
+    clear_mods();
+    idle_timer = 0;
+  }
+
   LEADER_DICTIONARY() {
     leading = false;
     leader_end();
