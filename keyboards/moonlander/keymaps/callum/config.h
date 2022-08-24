@@ -5,6 +5,7 @@
 #define ORYX_CONFIGURATOR
 #undef TAPPING_TERM
 #define TAPPING_TERM 150
+#define TAPPING_TERM_PER_KEY
 
 // https://www.reddit.com/r/olkb/comments/qu7vd8/taphold_settings_for_fast_typers/
 #define USB_SUSPEND_WAKEUP_DELAY 0

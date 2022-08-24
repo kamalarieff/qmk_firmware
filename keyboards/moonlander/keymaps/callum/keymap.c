@@ -43,6 +43,7 @@
 #define _ARROW_LHAND 9
 #define _GAMING 10
 #define IDLE_TIMEOUT_MS 1000
+#define SLASH_ENTER LT(0, KC_SLASH)
 
 enum custom_keycodes {
   PLOVER_ON = ML_SAFE_RANGE,
@@ -113,7 +114,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,              _______,             _______,         _______,        _______,                   KC_MEH,         DYN_REC_START1,     DYN_REC_START2,   KC_HYPR,             _______,               _______,               _______,             _______,          TO(_GAMING),         
     KC_LEAD,              KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         KC_BSPACE,
     TO(_COLEMAKDH),       KC_A,                KC_R,            KC_S,           KC_T,                      KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                KC_N,                  KC_E,                  KC_I,                KC_O,             _______,
-    _______,              KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         LCTL(KC_A),
+    _______,              KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              SLASH_ENTER,      LCTL(KC_A),
     _______,              _______,             _______,         OSL(_DESKTOP),  LA_NAV,                    _______,                                              _______,             LA_SYM,                OSL(_MACROS),          _______,             _______,          _______,
     KC_SPACE,             _______,             PLOVER_ON,                                                                                                        _______,             _______,               KC_BSPACE
   ),
@@ -322,6 +323,27 @@ oneshot_state os_ctrl_state = os_up_unqueued;
 oneshot_state os_alt_state = os_up_unqueued;
 oneshot_state os_cmd_state = os_up_unqueued;
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case SLASH_ENTER:
+      return 80;
+    default:
+      return TAPPING_TERM;
+  }
+}
+
+// https://getreuer.info/posts/keyboards/triggers/index.html#tap-vs.-long-press
+static bool process_tap_or_long_press_key(
+    keyrecord_t* record, uint16_t long_press_keycode) {
+  if (record->tap.count == 0) {  // Key is being held.
+    if (record->event.pressed) {
+      tap_code16(long_press_keycode);
+    }
+    return false;  // Skip default handling.
+  }
+  return true;  // Continue default handling.
+}
+
 static uint16_t idle_timer = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -488,6 +510,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           tap_code16(KC_LPRN); // Send KC_LPRN on tap
           return false;        // Return false to ignore further processing of key
       }
+    case SLASH_ENTER:  // Slash on tap, Enter on long press.
+      return process_tap_or_long_press_key(record, KC_ENTER);
   }
 
   update_oneshot(
