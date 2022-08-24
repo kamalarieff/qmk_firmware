@@ -130,7 +130,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // arrow keys
   [_ARROW] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              KC_ESCAPE,           LEFT_MONITOR,    _______,        RIGHT_MONITOR,             _______,        _______,            _______,          _______,             LSFT(KC_INSERT),       LCTL(KC_INSERT),       KC_CAPSLOCK,         KC_DELETE,         _______, 
+    _______,              KC_ESCAPE,           LEFT_MONITOR,    KEYNAV,         RIGHT_MONITOR,             _______,        _______,            _______,          _______,             LSFT(KC_INSERT),       LCTL(KC_INSERT),       KC_CAPSLOCK,         KC_DELETE,         _______, 
     _______,              OS_CMD,              OS_ALT,          OS_CTRL,        OS_SHFT,                   _______,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            XXXXXXX,           _______,
     _______,              SWITCH_APPS,         LGUI(KC_TAB),    _______,        _______,                   _______,                                              KC_HOME,             KC_PGDOWN,             KC_PGUP,               KC_END,              KC_ENTER,          _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
@@ -193,7 +193,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // arrow left hand layer
   [_ARROW_LHAND] = LAYOUT_moonlander(
     XXXXXXX,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,          
-    TO(_COLEMAKDH),       _______,             XXXXXXX,         KC_UP,          XXXXXXX,                   XXXXXXX,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,          
+    TO(_COLEMAKDH),       KC_ESCAPE,           XXXXXXX,         KC_UP,          XXXXXXX,                   XXXXXXX,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,          
     _______,              _______,             KC_LEFT,         KC_DOWN,        KC_RIGHT,                  _______,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            _______,           _______,          
     TO(_COLEMAKDH),       _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
@@ -410,6 +410,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KEYNAV:
       if (record->event.pressed) {
           SEND_STRING(SS_LCTL("`"));
+          layer_on(_ARROW_LHAND);
+      }
+      return false;
+    case KC_ESCAPE:
+      if (record->event.pressed) {
+          if (layer_state_is(_ARROW_LHAND)) {
+              layer_move(_COLEMAKDH);
+          }
+          tap_code(KC_ESCAPE);
+      }
+      return false;
+    case KC_SPACE:
+      if (record->event.pressed) {
+          if (layer_state_is(_ARROW_LHAND)) {
+              layer_move(_COLEMAKDH);
+          }
+          tap_code(KC_SPACE);
       }
       return false;
     case SWITCH_APPS:
