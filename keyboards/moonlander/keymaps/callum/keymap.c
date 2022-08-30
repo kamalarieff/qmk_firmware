@@ -44,6 +44,13 @@
 #define _GAMING 10
 #define IDLE_TIMEOUT_MS 1000
 #define SLASH_ENTER LT(0, KC_SLASH)
+#define KC_6_SHIFT LT(0, KC_6)
+#define KC_5_CTL LT(0, KC_5)
+#define KC_4_ALT LT(0, KC_4)
+#define KC_F4_SHIFT LT(0, KC_F4)
+#define KC_F5_CTL LT(0, KC_F5)
+#define KC_F6_ALT LT(0, KC_F6)
+#define KC_F11_GUI LT(0, KC_F11)
 
 enum custom_keycodes {
   PLOVER_ON = ML_SAFE_RANGE,
@@ -139,9 +146,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // fn layer
   [_FN] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              KC_F1,               KC_F2,           KC_F3,          KC_F4,                     KC_F5,          _______,            _______,          KC_F6,               KC_F7,                 KC_F8,                 KC_F9,               KC_F10,            _______, 
-    _______,              OS_CMD,              OS_ALT,          OS_CTRL,        OS_SHFT,                   KC_F11,         _______,            _______,          KC_F12,              OS_SHFT,               OS_CTRL,               OS_ALT,              OS_CMD,            _______, 
-    _______,              KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,                                                 KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,              _______,
+    _______,              _______,             KC_7,            KC_8,           KC_9,                      _______,        _______,            _______,          _______,             KC_F7,                 KC_F8,                 KC_F9,               KC_F12,            _______, 
+    _______,              KC_LGUI,             LALT_T(KC_4),    LCTL_T(KC_5),   LSFT_T(KC_6),              _______,        _______,            _______,          _______,             LSFT_T(KC_F4),         LCTL_T(KC_F5),         LALT_T(KC_F6),       LGUI_T(KC_F11),    _______, 
+    // _______,              OS_CMD,              KC_4_ALT,        KC_5_CTL,       KC_6_SHIFT,                _______,        _______,            _______,          _______,             KC_F4_SHIFT,         KC_F5_CTL,         KC_F6_ALT,       KC_F11_GUI,    _______, 
+    _______,              KC_0,                KC_1,            KC_2,           KC_3,                      _______,                                              _______,             KC_F1,                 KC_F2,                 KC_F3,               KC_F10,            _______,
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
@@ -326,7 +334,15 @@ oneshot_state os_cmd_state = os_up_unqueued;
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case SLASH_ENTER:
-      return 80;
+      return 90;
+    case LALT_T(KC_4):
+    case LCTL_T(KC_5):
+    case LSFT_T(KC_6):
+    case LSFT_T(KC_F4):
+    case LCTL_T(KC_F5):
+    case LALT_T(KC_F6):
+    case LGUI_T(KC_F11): 
+      return 110;
     default:
       return TAPPING_TERM;
   }
@@ -338,6 +354,17 @@ static bool process_tap_or_long_press_key(
   if (record->tap.count == 0) {  // Key is being held.
     if (record->event.pressed) {
       tap_code16(long_press_keycode);
+    }
+    return false;  // Skip default handling.
+  }
+  return true;  // Continue default handling.
+}
+
+static bool process_tap_or_long_press_one_shot_modifier(
+    keyrecord_t* record, uint16_t mods) {
+  if (record->tap.count == 0) {  // Key is being held.
+    if (record->event.pressed) {
+      add_oneshot_mods(mods);
     }
     return false;  // Skip default handling.
   }
@@ -529,6 +556,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     case SLASH_ENTER:  // Slash on tap, Enter on long press.
       return process_tap_or_long_press_key(record, KC_ENTER);
+    case KC_6_SHIFT:
+      return process_tap_or_long_press_one_shot_modifier(record, MOD_MASK_SHIFT);
+    case KC_5_CTL:
+      return process_tap_or_long_press_one_shot_modifier(record, MOD_MASK_CTRL);
+    case KC_4_ALT:
+      return process_tap_or_long_press_one_shot_modifier(record, MOD_MASK_ALT);
+    case KC_F4_SHIFT:
+      return process_tap_or_long_press_one_shot_modifier(record, MOD_MASK_SHIFT);
+    case KC_F5_CTL:
+      return process_tap_or_long_press_one_shot_modifier(record, MOD_MASK_CTRL);
+    case KC_F6_ALT:
+      return process_tap_or_long_press_one_shot_modifier(record, MOD_MASK_ALT);
+    case KC_F11_GUI:
+      return process_tap_or_long_press_one_shot_modifier(record, MOD_MASK_GUI);
   }
 
   update_oneshot(
