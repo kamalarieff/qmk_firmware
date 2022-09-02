@@ -49,7 +49,6 @@
 #define _NUMBER 2
 #define _SYMBOL 3
 #define _FN 4
-// #define _DESKTOP 5
 #define _APPLICATION 5
 #define _PLOVER 6
 #define _BROWSER 7
@@ -142,15 +141,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F14,               KC_F13,              _______,         _______,        KC_APPLICATION,            _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     KC_SPACE,             KC_TAB,              KC_F24,                                                                                                           _______,             _______,               _______
   ),
-  // // desktops layer
-  // [_DESKTOP] = LAYOUT_moonlander(
-  //   _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-  //   _______,              _______,             LGUI(KC_7),      LGUI(KC_8),     LGUI(KC_9),                _______,        _______,            _______,          XXXXXXX,             ARROW,                 BRACES,                PARENS,              _______,           _______, 
-  //   _______,              _______,             LGUI(KC_4),      LGUI(KC_5),     LGUI(KC_6),                _______,        _______,            _______,          _______,             KC_LSFT,               _______,               _______,             _______,           _______, 
-  //   _______,              _______,             LGUI(KC_1),      LGUI(KC_2),     LGUI(KC_3),                _______,                                              XXXXXXX,             XXXXXXX,               XXXXXXX,               XXXXXXX,             _______,           _______, 
-  //   _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
-  //   _______,              _______,             _______,                                                                                                          _______,             _______,               _______
-  // ),
   // applications layer
   [_APPLICATION] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
