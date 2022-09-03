@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
+#include "features/oneshot.h"
 #include "keymap_german.h"
 #include "keymap_nordic.h"
 #include "keymap_french.h"
@@ -27,22 +28,8 @@
 #include "keymap_belgian.h"
 #include "keymap_us_international.h"
 
-#define KC_MAC_UNDO LGUI(KC_Z)
-#define KC_MAC_CUT LGUI(KC_X)
-#define KC_MAC_COPY LGUI(KC_C)
-#define KC_MAC_PASTE LGUI(KC_V)
-#define KC_PC_UNDO LCTL(KC_Z)
-#define KC_PC_CUT LCTL(KC_X)
-#define KC_PC_COPY LCTL(KC_C)
-#define KC_PC_PASTE LCTL(KC_V)
-#define ES_LESS_MAC KC_GRAVE
-#define ES_GRTR_MAC LSFT(KC_GRAVE)
-#define ES_BSLS_MAC ALGR(KC_6)
-#define NO_PIPE_ALT KC_GRAVE
-#define NO_BSLS_ALT KC_EQUAL
-#define LSA_T(kc) MT(MOD_LSFT | MOD_LALT, kc)
-#define BP_NDSH_MAC ALGR(KC_8)
-#define MOON_LED_LEVEL LED_LEVEL
+#define LA_ARROW LT(_ARROW,KC_ESCAPE)
+#define LA_NUMBER LT(_NUMBER,KC_ENTER)
 
 #define _COLEMAKDH 0
 #define _ARROW 1
@@ -54,6 +41,7 @@
 #define _BROWSER 7
 #define _ARROW_LHAND 8
 #define _GAMING 9
+#define IDLE_TIMEOUT_MS 1000
 
 enum custom_keycodes {
   PLOVER_ON = ML_SAFE_RANGE,
@@ -68,12 +56,13 @@ enum custom_keycodes {
   PARENS,
   DELETE_BRACES,
   TMUX_ALT_TAB,
+  OS_SHFT,
+  OS_CTRL,
+  OS_ALT,
+  OS_CMD
 };
 
-
 enum tap_dance_codes {
-  DANCE_0,
-  DANCE_1,
   DANCE_2,
   DANCE_3,
   DANCE_4,
@@ -102,14 +91,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LEAD,              KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         _______,
     TO(_COLEMAKDH),       LGUI_T(KC_A),        LALT_T(KC_R),    LCTL_T(KC_S),   LSFT_T(KC_T),              KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                RSFT_T(KC_N),          LCTL_T(KC_E),          LALT_T(KC_I),        LGUI_T(KC_O),     _______,
     _______,              KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         LCTL(KC_A),
-    _______,              _______,             _______,         LT(_APPLICATION, KC_TAB),         LT(_ARROW,KC_ESCAPE),      _______,                                              _______,             LT(_NUMBER,KC_ENTER),  LT(_FN, KC_DELETE),     _______,             _______,          _______,
+    _______,              _______,             _______,         LT(_APPLICATION, KC_TAB),         LA_ARROW,      _______,                                              _______,             LA_NUMBER,  LT(_FN, KC_DELETE),     _______,             _______,          _______,
     KC_SPACE,             _______,             PLOVER_ON,                                                                                                        _______,             _______,               LT(_SYMBOL,KC_BSPACE)
   ),
   // arrow keys
   [_ARROW] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              KC_ESCAPE,           LEFT_MONITOR,    XXXXXXX,        RIGHT_MONITOR,             XXXXXXX,        _______,            _______,          LCTL(KC_Y),          LSFT(KC_INSERT),       LCTL(KC_INSERT),       LSFT(KC_DELETE),     LCTL(KC_Z),        _______, 
-    _______,              KC_LGUI,             KC_LALT,         KC_LCTRL,       KC_LSHIFT,                 XXXXXXX,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            KC_CAPSLOCK,       _______, 
+    // _______,              OSM(MOD_LGUI),       OSM(MOD_LALT),   OSM(MOD_LCTL),  OSM(MOD_LSFT),             XXXXXXX,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            KC_CAPSLOCK,       _______, 
+    _______,              OS_CMD,              OS_ALT,          OS_CTRL,        OS_SHFT,             XXXXXXX,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            KC_CAPSLOCK,       _______, 
     _______,              SWITCH_APPS,         LGUI(KC_TAB),    XXXXXXX,        XXXXXXX,                   XXXXXXX,                                              KC_HOME,             KC_PGDOWN,             KC_PGUP,               KC_END,              KC_ENTER,          _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               KC_DELETE,             _______,             _______,           _______, 
     KC_SPACE,             XXXXXXX,             XXXXXXX,                                                                                                          _______,             _______,               KC_BSPACE
@@ -118,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_NUMBER] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              KC_TAB,              KC_7,            KC_8,           KC_9,                      KC_RABK,        _______,            _______,          XXXXXXX,             LCTL(KC_A),            TMUX_ALT_TAB,          XXXXXXX,             KC_QUOTE,          _______, 
-    _______,              KC_SCOLON,           KC_4,            KC_5,           KC_6,                      KC_EQUAL,       _______,            _______,          KC_BSPACE,           KC_LSHIFT,             KC_LCTRL,              KC_LALT,             KC_LGUI,           _______,
+    _______,              KC_SCOLON,           KC_4,            KC_5,           KC_6,                      KC_EQUAL,       _______,            _______,          KC_BSPACE,           OS_SHFT,         OS_CTRL,         OS_ALT,       OS_CMD,     _______, 
     _______,              KC_BSLASH,           KC_1,            KC_2,           KC_3,                      KC_MINUS,                                             XXXXXXX,             OSL(_SYMBOL),          XXXXXXX,               XXXXXXX,             MO(_SYMBOL),       _______, 
     _______,              _______,             _______,         _______,        KC_0,                      _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              KC_MINUS,            _______,                                                                                                          _______,             XXXXXXX,               _______
@@ -126,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // shifted number layer
   [_SYMBOL] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              KC_GRAVE,            KC_TILD,         KC_LPRN,        KC_RPRN,                   _______,        _______,            _______,          _______,             ARROW,                 BRACES,                PARENS,              KC_DQUO,           _______, 
+    _______,              KC_GRAVE,            KC_TILD,         KC_LPRN,        KC_RPRN,                   ARROW,          _______,            _______,          _______,             ARROW,                 BRACES,                PARENS,              KC_DQUO,           _______, 
     _______,              KC_COLN,             KC_LABK,         KC_LBRACKET,    KC_RBRACKET,               KC_PLUS,        _______,            _______,          _______,             OSM(MOD_LSFT),         OSM(MOD_LCTL),         OSM(MOD_LALT),       OSM(MOD_LGUI),     _______, 
     _______,              KC_PIPE,             KC_RABK,         KC_LCBR,        KC_RCBR,                   KC_UNDS,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
@@ -277,7 +267,42 @@ void rgb_matrix_indicators_user(void) {
 
 uint16_t key_timer;
 
+bool is_oneshot_cancel_key(uint16_t keycode) {
+    switch (keycode) {
+    case LA_ARROW:
+    case LA_NUMBER:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool is_oneshot_ignored_key(uint16_t keycode) {
+    switch (keycode) {
+    case LA_ARROW:
+    case LA_NUMBER:
+    case OS_SHFT:
+    case OS_CTRL:
+    case OS_ALT:
+    case OS_CMD:
+        return true;
+    default:
+        return false;
+    }
+}
+
+oneshot_state os_shft_state = os_up_unqueued;
+oneshot_state os_ctrl_state = os_up_unqueued;
+oneshot_state os_alt_state = os_up_unqueued;
+oneshot_state os_cmd_state = os_up_unqueued;
+
+static uint16_t idle_timer = 0;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  // https://www.reddit.com/r/olkb/comments/wrgv05/can_i_prevent_hold_action_for_taphold_keys_unless/#
+  // https://getreuer.info/posts/keyboards/triggers/index.html
+  idle_timer = (record->event.time + IDLE_TIMEOUT_MS) | 1;
+
   // Get current mod and one-shot mod states.
   uint8_t mods = get_mods();
   uint8_t oneshot_mods = get_oneshot_mods();
@@ -428,6 +453,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
   }
+
+  update_oneshot(
+      &os_shft_state, KC_LSFT, OS_SHFT,
+      keycode, record
+  );
+  update_oneshot(
+      &os_ctrl_state, KC_LCTL, OS_CTRL,
+      keycode, record
+  );
+  update_oneshot(
+      &os_alt_state, KC_LALT, OS_ALT,
+      keycode, record
+  );
+  update_oneshot(
+      &os_cmd_state, KC_LGUI, OS_CMD,
+      keycode, record
+  );
   return true;
 }
 
@@ -462,59 +504,6 @@ uint8_t dance_step(qk_tap_dance_state_t *state) {
 }
 
 
-void dance_0_finished(qk_tap_dance_state_t *state, void *user_data);
-void dance_0_reset(qk_tap_dance_state_t *state, void *user_data);
-
-void dance_0_finished(qk_tap_dance_state_t *state, void *user_data) {
-    dance_state[0].step = dance_step(state);
-    switch (dance_state[0].step) {
-        case SINGLE_TAP: register_code16(KC_ESCAPE); break;
-        case DOUBLE_TAP: layer_on(_COLEMAKDH); break;
-    }
-}
-
-void dance_0_reset(qk_tap_dance_state_t *state, void *user_data) {
-    wait_ms(10);
-    switch (dance_state[0].step) {
-        case SINGLE_TAP: unregister_code16(KC_ESCAPE); break;
-    }
-    dance_state[0].step = 0;
-}
-void on_dance_1(qk_tap_dance_state_t *state, void *user_data);
-void dance_1_finished(qk_tap_dance_state_t *state, void *user_data);
-void dance_1_reset(qk_tap_dance_state_t *state, void *user_data);
-
-void on_dance_1(qk_tap_dance_state_t *state, void *user_data) {
-    if(state->count == 3) {
-        tap_code16(KC_V);
-        tap_code16(KC_V);
-        tap_code16(KC_V);
-    }
-    if(state->count > 3) {
-        tap_code16(KC_V);
-    }
-}
-
-void dance_1_finished(qk_tap_dance_state_t *state, void *user_data) {
-    dance_state[1].step = dance_step(state);
-    switch (dance_state[1].step) {
-        case SINGLE_TAP: register_code16(KC_V); break;
-        case SINGLE_HOLD: register_code16(LCTL(KC_V)); break;
-        case DOUBLE_TAP: register_code16(KC_V); register_code16(KC_V); break;
-        case DOUBLE_SINGLE_TAP: tap_code16(KC_V); register_code16(KC_V);
-    }
-}
-
-void dance_1_reset(qk_tap_dance_state_t *state, void *user_data) {
-    wait_ms(10);
-    switch (dance_state[1].step) {
-        case SINGLE_TAP: unregister_code16(KC_V); break;
-        case SINGLE_HOLD: unregister_code16(LCTL(KC_V)); break;
-        case DOUBLE_TAP: unregister_code16(KC_V); break;
-        case DOUBLE_SINGLE_TAP: unregister_code16(KC_V); break;
-    }
-    dance_state[1].step = 0;
-}
 void on_dance_2(qk_tap_dance_state_t *state, void *user_data);
 void dance_2_finished(qk_tap_dance_state_t *state, void *user_data);
 void dance_2_reset(qk_tap_dance_state_t *state, void *user_data);
@@ -840,8 +829,6 @@ void dance_10_reset(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-        [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_0_finished, dance_0_reset),
-        [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_1, dance_1_finished, dance_1_reset),
         [DANCE_2] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_2, dance_2_finished, dance_2_reset),
         [DANCE_3] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_3, dance_3_finished, dance_3_reset),
         [DANCE_4] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_4, dance_4_finished, dance_4_reset),
