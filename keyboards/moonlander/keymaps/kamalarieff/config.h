@@ -4,7 +4,8 @@
 */
 #define ORYX_CONFIGURATOR
 #undef TAPPING_TERM
-#define TAPPING_TERM 160
+#define TAPPING_TERM 200
+#define TAPPING_TERM_PER_KEY
 
 // https://www.reddit.com/r/olkb/comments/qu7vd8/taphold_settings_for_fast_typers/
 #define IGNORE_MOD_TAP_INTERRUPT
