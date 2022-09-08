@@ -68,7 +68,10 @@ enum custom_keycodes {
   OS_SHFT,
   OS_CTRL,
   OS_ALT,
-  OS_CMD
+  OS_CMD,
+  CUSTOM_OSM_SHIFT,
+  CUSTOM_OSM_CTRL,
+  CUSTOM_OSM_ALT,
 };
 
 enum tap_dance_codes {
@@ -139,8 +142,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // shifted number layer
   [_SYMBOL] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              KC_GRAVE,            KC_TILD,         KC_LPRN,        KC_RPRN,                   ARROW,          _______,            _______,          _______,             ARROW,                 BRACES,                PARENS,              KC_DQUO,           _______, 
-    _______,              KC_COLN,             KC_LABK,         KC_LBRACKET,    KC_RBRACKET,               KC_PLUS,        _______,            _______,          _______,             OSM(MOD_LSFT),         OSM(MOD_LCTL),         OSM(MOD_LALT),       OSM(MOD_LGUI),     _______, 
+    TO(_COLEMAKDH),       KC_GRAVE,            KC_TILD,         KC_LPRN,        KC_RPRN,                   ARROW,          _______,            _______,          _______,             ARROW,                 BRACES,                PARENS,              KC_DQUO,           _______, 
+    _______,              KC_COLN,             KC_LABK,         KC_LBRACKET,    KC_RBRACKET,               KC_PLUS,        _______,            _______,          _______,             CUSTOM_OSM_SHIFT,      CUSTOM_OSM_CTRL,       CUSTOM_OSM_ALT,      OSM(MOD_LGUI),     _______, 
     _______,              KC_PIPE,             KC_RABK,         KC_LCBR,        KC_RCBR,                   KC_UNDS,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
@@ -349,6 +352,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         tap_code(KC_LEFT);  // Move cursor between braces.
         set_mods(mods);  // Restore mods.
+      } else {
+          clear_oneshot_layer_state(ONESHOT_PRESSED);
       }
       return false;
     case PARENS:  // Types () and puts cursor between parens.
@@ -356,6 +361,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING("()");
         tap_code(KC_LEFT);  // Move cursor between parens.
         set_mods(mods);  // Restore mods.
+      } else {
+          clear_oneshot_layer_state(ONESHOT_PRESSED);
       }
       return false;
     case ARROW:  // Arrow macro, types -> or =>.
@@ -368,6 +375,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         } else {
           SEND_STRING("->");
         }
+      } else {
+          clear_oneshot_layer_state(ONESHOT_PRESSED);
       }
       return false;
     case DELETE_BRACES:
@@ -400,6 +409,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case RIGHT_MONITOR:
       if (record->event.pressed) {
           SEND_STRING(SS_LCTL(";f"));
+      }
+      return false;
+    case CUSTOM_OSM_SHIFT:
+      if (record->event.pressed) {
+          set_oneshot_mods(MOD_MASK_SHIFT);
+          set_oneshot_layer(_SYMBOL, ONESHOT_START);
+      }
+      return false;
+    case CUSTOM_OSM_CTRL:
+      if (record->event.pressed) {
+          set_oneshot_mods(MOD_MASK_CTRL);
+          set_oneshot_layer(_SYMBOL, ONESHOT_START);
+      }
+      return false;
+    case CUSTOM_OSM_ALT:
+      if (record->event.pressed) {
+          set_oneshot_mods(MOD_MASK_ALT);
+          set_oneshot_layer(_SYMBOL, ONESHOT_START);
       }
       return false;
     case PLOVER_LOOKUP:
