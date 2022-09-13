@@ -96,14 +96,62 @@ enum tap_dance_codes {
 };
 
 enum combos {
-  HCOMMA_SEMICOLON
+  UY_LEFT_BRACKET,
+  YQUOTE_RIGHT_BRACKET,
+  HCOMMA_SEMICOLON,
+  LEFT_BRACKET_RIGHT_BRACKET,
+  LEFT_PRN_RIGHT_PRN,
+  LEFT_CBR_RIGHT_CBR,
+  LEFT_ABK_RIGHT_ABK,
 };
 
 const uint16_t PROGMEM hcomma_combo[] = {KC_H, KC_COMMA, COMBO_END};
+const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
+const uint16_t PROGMEM yquote_combo[] = {KC_Y, KC_QUOTE, COMBO_END};
+const uint16_t PROGMEM leftbracket_rightbracket_combo[] = {KC_LBRACKET, KC_RBRACKET, COMBO_END};
+const uint16_t PROGMEM leftprn_rightprn_combo[] = {KC_LPRN, KC_RPRN, COMBO_END};
+const uint16_t PROGMEM leftcbr_rightcbr_combo[] = {KC_LCBR, KC_RCBR, COMBO_END};
+const uint16_t PROGMEM leftabk_rightabk_combo[] = {KC_LABK, KC_RABK, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
+  [UY_LEFT_BRACKET] = COMBO(uy_combo, KC_LBRACKET),
+  [YQUOTE_RIGHT_BRACKET] = COMBO(yquote_combo, KC_RBRACKET),
   [HCOMMA_SEMICOLON] = COMBO(hcomma_combo, KC_SCOLON),
+  [LEFT_BRACKET_RIGHT_BRACKET] = COMBO_ACTION(leftbracket_rightbracket_combo),
+  [LEFT_PRN_RIGHT_PRN] = COMBO_ACTION(leftprn_rightprn_combo),
+  [LEFT_CBR_RIGHT_CBR] = COMBO_ACTION(leftcbr_rightcbr_combo),
+  [LEFT_ABK_RIGHT_ABK] = COMBO_ACTION(leftabk_rightabk_combo),
 };
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+  switch(combo_index) {
+    case LEFT_BRACKET_RIGHT_BRACKET:
+      if (pressed) {
+        SEND_STRING("[]");
+        tap_code(KC_LEFT);  // Move cursor between braces.
+      }
+      break;
+    case LEFT_PRN_RIGHT_PRN:
+      if (pressed) {
+        SEND_STRING("()");
+        tap_code(KC_LEFT);  // Move cursor between braces.
+      }
+      break;
+    case LEFT_CBR_RIGHT_CBR:
+      if (pressed) {
+        SEND_STRING("{}");
+        tap_code(KC_LEFT);  // Move cursor between braces.
+      }
+      break;
+    case LEFT_ABK_RIGHT_ABK:
+      if (pressed) {
+        SEND_STRING("<>");
+        tap_code(KC_LEFT);  // Move cursor between braces.
+      }
+      break;
+  }
+}
+
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
