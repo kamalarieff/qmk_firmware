@@ -1005,6 +1005,11 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 LEADER_EXTERNS();
 
 void matrix_scan_user(void) {
+  if (idle_timer && timer_expired(timer_read(), idle_timer)) {
+    // If execution reaches here, the keyboard has gone idle.
+    clear_mods();
+    idle_timer = 0;
+  }
   LEADER_DICTIONARY() {
     leading = false;
     leader_end();
