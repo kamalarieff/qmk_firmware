@@ -45,10 +45,11 @@
 #define _SYMBOL 3
 #define _FN 4
 #define _APPLICATION 5
-#define _PLOVER 6
-#define _BROWSER 7
-#define _ARROW_LHAND 8
-#define _GAMING 9
+#define _TMUX 6
+#define _PLOVER 7
+#define _BROWSER 8
+#define _ARROW_LHAND 9
+#define _GAMING 10
 
 #define IDLE_TIMEOUT_MS 1000
 
@@ -64,7 +65,6 @@ enum custom_keycodes {
   BRACES,
   PARENS,
   DELETE_BRACES,
-  TMUX_ALT_TAB,
   OS_SHFT,
   OS_CTRL,
   OS_ALT,
@@ -72,6 +72,15 @@ enum custom_keycodes {
   CUSTOM_OSM_SHIFT,
   CUSTOM_OSM_CTRL,
   CUSTOM_OSM_ALT,
+  TMUX_FZF,
+  TMUX_FZF_SESSION,
+  TMUX_SWITCH_SESSION,
+  TMUX_ALT_TAB,
+  TMUX_CLOSE_PANE,
+  TMUX_LEFT_PANE,
+  TMUX_DOWN_PANE,
+  TMUX_UP_PANE,
+  TMUX_RIGHT_PANE,
 };
 
 enum tap_dance_codes {
@@ -137,7 +146,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // NOTE: can try to remove KC_TAB if you find it less used and replace it with KC_GRAVE and move KC_TILD into the grave position in the _SYMBOL layer
     _______,              KC_TAB,              KC_7,            KC_8,           KC_9,                      KC_RABK,        _______,            _______,          XXXXXXX,             LCTL(KC_A),            TMUX_ALT_TAB,          XXXXXXX,             KC_QUOTE,          _______, 
     _______,              KC_SCOLON,           KC_4,            KC_5,           KC_6,                      KC_EQUAL,       _______,            _______,          KC_BSPACE,           OS_SHFT,               OS_CTRL,               OS_ALT,              OS_CMD,            _______, 
-    _______,              KC_BSLASH,           KC_1,            KC_2,           KC_3,                      KC_MINUS,                                             XXXXXXX,             OSL(_SYMBOL),          XXXXXXX,               XXXXXXX,             MO(_SYMBOL),       _______, 
+    _______,              KC_BSLASH,           KC_1,            KC_2,           KC_3,                      KC_MINUS,                                             XXXXXXX,             OSL(_SYMBOL),          OSL(_APPLICATION),     OSL(_TMUX),          _______,           _______, 
     _______,              _______,             _______,         _______,        KC_0,                      _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              KC_MINUS,            _______,                                                                                                          _______,             XXXXXXX,               _______
   ),
@@ -165,6 +174,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,              _______,             HYPR(KC_7),      HYPR(KC_8),     HYPR(KC_9),                _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             HYPR(KC_4),      HYPR(KC_5),     HYPR(KC_6),                _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             HYPR(KC_1),      HYPR(KC_2),     HYPR(KC_3),                _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,                                                                                                          _______,             _______,               _______
+  ),
+  // tmux layer
+  [_TMUX] = LAYOUT_moonlander(
+    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,         TMUX_FZF,       _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
+    _______,              _______,             _______,         TMUX_FZF_SESSION,_______,                  _______,        _______,            _______,          TMUX_LEFT_PANE,      TMUX_DOWN_PANE,        TMUX_UP_PANE,          TMUX_RIGHT_PANE,     _______,           _______, 
+    _______,              TMUX_ALT_TAB,        TMUX_CLOSE_PANE, _______,        _______,                   TMUX_SWITCH_SESSION,                                  _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
@@ -391,6 +409,46 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case TMUX_ALT_TAB:
       if (record->event.pressed) {
           SEND_STRING(SS_LCTL("a") SS_LCTL("a"));
+      }
+      return false;
+    case TMUX_FZF:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("a") SS_LSFT("f"));
+      }
+      return false;
+    case TMUX_FZF_SESSION:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("a")"s");
+      }
+      return false;
+    case TMUX_CLOSE_PANE:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("a")"x");
+      }
+      return false;
+    case TMUX_LEFT_PANE:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("a")SS_TAP(X_LEFT));
+      }
+      return false;
+    case TMUX_DOWN_PANE:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("a")SS_TAP(X_DOWN));
+      }
+      return false;
+    case TMUX_UP_PANE:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("a")SS_TAP(X_UP));
+      }
+      return false;
+    case TMUX_RIGHT_PANE:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("a")SS_TAP(X_RIGHT));
+      }
+      return false;
+    case TMUX_SWITCH_SESSION:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("a")"v");
       }
       return false;
     case KEYNAV:
