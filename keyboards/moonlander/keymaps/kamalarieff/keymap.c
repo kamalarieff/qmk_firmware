@@ -1010,7 +1010,7 @@ void matrix_scan_user(void) {
     leader_end();
 
     SEQ_ONE_KEY(KC_Q) {
-      layer_on(_NUMBER);
+      tap_code(KC_F12);
     }
     SEQ_ONE_KEY(KC_W) {
       layer_on(_BROWSER);
