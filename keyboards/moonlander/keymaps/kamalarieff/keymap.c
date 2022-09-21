@@ -177,16 +177,13 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case SHFT_T:
-        case CTRL_S:
-        case CTRL_E:
-            return 140;
-        case SHFT_N:
-            return 100;
-        case LA_NUMBER:
-            return 120;
-        default:
-            return TAPPING_TERM;
+      case SHFT_T:
+      case CTRL_S:
+      case CTRL_E:
+        return 140;
+      case SHFT_N:
+        return 100;
+      case LA_NUMBER:
       // case KEYNAV_LEFT:
       // case KEYNAV_DOWN:
       // case KEYNAV_UP:
@@ -196,6 +193,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
       case TD(DANCE_13):
       case TD(DANCE_14):
         return 110;
+      default:
+        return TAPPING_TERM;
     }
 }
 
