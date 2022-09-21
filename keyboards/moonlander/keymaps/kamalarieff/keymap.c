@@ -42,6 +42,18 @@
 #define APP_TAB LT(_APPLICATION, KC_TAB)
 // #define FN_DEL LT(_FN, KC_DELETE)
 
+// Tap Hold
+#define V_ENTER LT(0, KC_V)
+// #define KEYNAV_LEFT LT(0, KC_R)
+// #define KEYNAV_DOWN LT(0, KC_S)
+// #define KEYNAV_UP LT(0, KC_F)
+// #define KEYNAV_RIGHT LT(0, KC_T)
+
+// #define KEYNAV_LEFT TD(DANCE_11)
+// #define KEYNAV_DOWN TD(DANCE_12)
+// #define KEYNAV_UP TD(DANCE_13)
+// #define KEYNAV_RIGHT TD(DANCE_14)
+
 // Layers
 #define _COLEMAKDH 0
 #define _ARROW 1
@@ -169,7 +181,23 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return 120;
         default:
             return TAPPING_TERM;
+      // case KEYNAV_LEFT:
+      // case KEYNAV_DOWN:
+      // case KEYNAV_UP:
+      // case KEYNAV_RIGHT:
     }
+}
+
+// https://getreuer.info/posts/keyboards/triggers/index.html#tap-vs.-long-press
+static bool process_tap_or_long_press_key(
+    keyrecord_t* record, uint16_t long_press_keycode) {
+  if (record->tap.count == 0) {  // Key is being held.
+    if (record->event.pressed) {
+      tap_code16(long_press_keycode);
+    }
+    return false;  // Skip default handling.
+  }
+  return true;  // Continue default handling.
 }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -614,6 +642,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_PLOVER);
       }
       return false;
+    // case KEYNAV_LEFT:
+    //   return process_tap_or_long_press_key(record, S(KC_R));
+    // case KEYNAV_DOWN:
+    //   return process_tap_or_long_press_key(record, S(KC_S));
+    // case KEYNAV_UP:
+    //   return process_tap_or_long_press_key(record, S(KC_F));
+    // case KEYNAV_RIGHT:
+    //   return process_tap_or_long_press_key(record, S(KC_T));
   }
 
   update_oneshot(
