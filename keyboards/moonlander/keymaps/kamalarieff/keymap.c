@@ -92,6 +92,7 @@ enum custom_keycodes {
   TMUX_FZF,
   TMUX_FZF_SESSION,
   TMUX_SWITCH_SESSION,
+  TMUX_SWITCH_WINDOW,
   TMUX_ALT_TAB,
   TMUX_CLOSE_PANE,
   TMUX_LEFT_PANE,
@@ -550,9 +551,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_LCTL("a")"v");
       }
       return false;
-    case KEYNAV:
+    case TMUX_SWITCH_WINDOW:
       if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("`"));
+          SEND_STRING(SS_LCTL("a")"b");
       }
       return false;
     case SWITCH_APPS:
