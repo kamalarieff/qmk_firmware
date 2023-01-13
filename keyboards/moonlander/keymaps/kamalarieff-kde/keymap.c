@@ -39,7 +39,6 @@
 #define CTRL_E LCTL_T(KC_E)
 
 // Layer Tap
-#define APP_TAB LT(_APPLICATION, KC_TAB)
 // #define FN_DEL LT(_FN, KC_DELETE)
 
 // Tap Hold
@@ -53,21 +52,16 @@
 #define _NUMBER 2
 #define _SYMBOL 3
 #define _FN 4
-#define _APPLICATION 5
-#define _TMUX 6
-#define _KEYNAV 7
-#define _PLOVER 8
-#define _BROWSER 9
-#define _ARROW_LHAND 10
-#define _GAMING 11
+#define _TMUX 5
+#define _KEYNAV 6
+#define _BROWSER 7
+#define _ARROW_LHAND 8
+#define _GAMING 9
 
 #define IDLE_TIMEOUT_MS 1000
 
 enum custom_keycodes {
-  PLOVER_ON = ML_SAFE_RANGE,
-  PLOVER_OFF,
-  PLOVER_LOOKUP,
-  LEFT_MONITOR,
+  LEFT_MONITOR = ML_SAFE_RANGE,
   RIGHT_MONITOR,
   SWITCH_APPS,
   KEYNAV,
@@ -223,7 +217,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LEAD,              LGUI_T(KC_A),        LALT_T(KC_R),    CTRL_S,         SHFT_T,                    KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                SHFT_N,                CTRL_E,                LALT_T(KC_I),        LGUI_T(KC_O),     KC_ENTER,
     KC_LSFT,              KC_Z,                KC_X,            KC_C,           KC_D,                      V_ENTER,                                              KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         _______,
     KC_LCTL,              _______,             _______,         KC_LGUI,        LA_ARROW,                  _______,                                              _______,             LA_NUMBER,             KC_DELETE,             _______,             _______,          TO(_GAMING),
-    KC_SPACE,             _______,             PLOVER_ON,                                                                                                        _______,             _______,               KC_BSPACE
+    KC_SPACE,             _______,             _______,                                                                                                          _______,             _______,               KC_BSPACE
   ),
   // arrow keys
   [_ARROW] = LAYOUT_moonlander(
@@ -239,7 +233,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     TO(_COLEMAKDH),       KC_GRAVE,            KC_7,            KC_8,           KC_9,                      KC_RABK,        _______,            _______,          XXXXXXX,             LCTL(KC_A),            TMUX_ALT_TAB,          XXXXXXX,             KC_QUOTE,          _______, 
     _______,              KC_SCOLON,           KC_4,            KC_5,           KC_6,                      KC_EQUAL,       _______,            _______,          KC_BSPACE,           OS_SHFT,               OS_CTRL,               OS_ALT,              OS_CMD,            _______, 
-    _______,              KC_BSLASH,           KC_1,            KC_2,           KC_3,                      KC_MINUS,                                             XXXXXXX,             OSL(_SYMBOL),          OSL(_APPLICATION),     OSL(_TMUX),          _______,           _______, 
+    _______,              KC_BSLASH,           KC_1,            KC_2,           KC_3,                      KC_MINUS,                                             XXXXXXX,             OSL(_SYMBOL),          _______,               OSL(_TMUX),          _______,           _______, 
     _______,              _______,             _______,         _______,        KC_0,                      _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              KC_MINUS,            _______,                                                                                                          _______,             XXXXXXX,               _______
   ),
@@ -261,15 +255,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F14,               KC_F13,              _______,         _______,        KC_APPLICATION,            _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     KC_SPACE,             KC_TAB,              KC_F24,                                                                                                           _______,             _______,               _______
   ),
-  // applications layer
-  [_APPLICATION] = LAYOUT_moonlander(
-    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              _______,             LGUI(KC_7),      LGUI(KC_8),     LGUI(KC_9),                _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              _______,             LGUI(KC_4),      LGUI(KC_5),     LGUI(KC_6),                _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              _______,             LGUI(KC_1),      LGUI(KC_2),     LGUI(KC_3),                _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              _______,             _______,                                                                                                          _______,             _______,               _______
-  ),
   // tmux layer
   [_TMUX] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
@@ -287,15 +272,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,              KC_MS_WH_UP,         KC_X,            KC_MS_WH_DOWN,  KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         _______,
     _______,              _______,             _______,         _______,        KC_ESCAPE,                 _______,                                              _______,             _______,               _______,               _______,             _______,          _______,
     KC_SPACE,             _______,             _______,                                                                                                          _______,             _______,               KC_BSPACE
-  ),
-  // plover layer
-  [_PLOVER] = LAYOUT_moonlander(
-    XXXXXXX,              KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,           XXXXXXX,            XXXXXXX,          KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,              XXXXXXX,
-    PLOVER_OFF,           KC_Q,                KC_W,            KC_E,           KC_R,                      KC_T,           XXXXXXX,            _______,          KC_Y,                KC_U,                  KC_I,                  KC_O,                KC_P,              KC_LBRACKET,
-    _______,              KC_A,                KC_S,            KC_D,           KC_F,                      KC_G,           XXXXXXX,            KC_ASTG,          KC_H,                KC_J,                  KC_K,                  KC_L,                KC_SCOLON,         KC_QUOTE,
-    _______,              SWITCH_APPS,         XXXXXXX,         XXXXXXX,        XXXXXXX,                   PLOVER_LOOKUP,                                        _______,             XXXXXXX,               XXXXXXX,               XXXXXXX,             XXXXXXX,           _______,
-    _______,              _______,             XXXXXXX,         KC_C,           KC_V,                      _______,                                              _______,             KC_N,                  KC_M,                  XXXXXXX,             _______,           _______,
-    _______,              _______,             PLOVER_OFF,                                                                                                       _______,             XXXXXXX,               KC_BSPACE
   ),
   // browser layer
   [_BROWSER] = LAYOUT_moonlander(
@@ -351,8 +327,6 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
 
     [_GAMING] = { {205,255,255}, {105,255,255}, {105,255,255}, {105,255,255}, {154,255,255}, {205,255,255}, {205,255,255}, {255,220,201}, {205,255,255}, {154,255,255}, {205,255,255}, {255,220,201}, {255,220,201}, {205,255,255}, {154,255,255}, {205,255,255}, {205,255,255}, {255,220,201}, {205,255,255}, {35,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {35,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {105,255,255}, {105,255,255}, {105,255,255}, {105,255,255}, {154,255,255}, {154,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {105,255,255}, {154,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {35,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {35,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {205,255,255}, {105,255,255}, {0,0,255}, {105,255,255}, {105,255,255}, {105,255,255}, {105,255,255}, {154,255,255} },
 
-    [_PLOVER] = { {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {154,255,255}, {154,255,255}, {0,183,238}, {0,0,0}, {0,0,0}, {0,183,238}, {0,183,238}, {0,0,0}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,183,238}, {0,183,238}, {0,183,238}, {0,183,238}, {0,0,0}, {0,0,0}, {85,203,158}, {33,255,255}, {154,255,255}, {154,255,255}, {0,0,0}, {169,120,255} },
-
     [_BROWSER] = { {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {105,255,255}, {105,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {105,255,255}, {105,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {105,255,255}, {0,0,0}, {154,255,255}, {0,0,0}, {105,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {154,255,255}, {154,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {105,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {105,255,255}, {0,0,0}, {0,0,0}, {105,255,255}, {0,0,0}, {105,255,255}, {0,0,0}, {154,255,255}, {0,0,0}, {0,0,0}, {105,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {154,255,255}, {154,255,255}, {0,0,0}, {0,0,0} },
 
     [_ARROW_LHAND] = { {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {15,166,195}, {0,0,0}, {0,0,0}, {0,0,0}, {15,166,195}, {15,166,195}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {15,166,195}, {0,0,0}, {154,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {154,255,255}, {154,255,255}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {15,166,195}, {0,0,0}, {0,0,0}, {15,166,195}, {0,0,0}, {15,166,195}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {15,166,195}, {0,0,0}, {154,255,255}, {0,0,0}, {0,0,0}, {15,166,195}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {154,255,255}, {154,255,255}, {0,0,0}, {0,0,0} },
@@ -396,9 +370,6 @@ void rgb_matrix_indicators_user(void) {
       break;
     case _GAMING:
       set_layer_color(_GAMING);
-      break;
-    case _PLOVER:
-      set_layer_color(_PLOVER);
       break;
     case _BROWSER:
       set_layer_color(_BROWSER);
@@ -589,79 +560,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
           set_oneshot_mods(MOD_MASK_ALT);
           set_oneshot_layer(_SYMBOL, ONESHOT_START);
-      }
-      return false;
-    case PLOVER_LOOKUP:
-      if (record->event.pressed) {
-        register_code(KC_E);
-        register_code(KC_R);
-        register_code(KC_F);
-        register_code(KC_C);
-        register_code(KC_V);
-        register_code(KC_K);
-        register_code(KC_L);
-      } else {
-        unregister_code(KC_E);
-        unregister_code(KC_R);
-        unregister_code(KC_F);
-        unregister_code(KC_C);
-        unregister_code(KC_V);
-        unregister_code(KC_K);
-        unregister_code(KC_L);
-
-        register_code(KC_Q);
-        register_code(KC_W);
-        register_code(KC_E);
-        register_code(KC_R);
-
-        unregister_code(KC_Q);
-        unregister_code(KC_W);
-        unregister_code(KC_E);
-        unregister_code(KC_R);
-         
-        layer_on(_COLEMAKDH);
-        layer_off(_PLOVER);
-      }
-      return false;
-    case PLOVER_ON:
-      if (record->event.pressed) {
-        register_code(KC_LCTRL);
-        register_code(KC_LSHIFT);
-        register_code(KC_LGUI);
-        register_code(KC_W);
-        unregister_code(KC_W);
-        unregister_code(KC_LGUI);
-        unregister_code(KC_LSHIFT);
-        unregister_code(KC_LCTRL);
-        // You have to do this in order to trigger Plover
-        register_code(KC_Q);
-        register_code(KC_W);
-        register_code(KC_E);
-        register_code(KC_R);
-      } else {
-        unregister_code(KC_Q);
-        unregister_code(KC_W);
-        unregister_code(KC_E);
-        unregister_code(KC_R);
-        combo_disable();
-        layer_off(_COLEMAKDH);
-        layer_on(_PLOVER);
-      }
-      return false;
-    case PLOVER_OFF:
-      if (record->event.pressed) {
-        register_code(KC_Q);
-        register_code(KC_W);
-        register_code(KC_E);
-        register_code(KC_R);
-      } else {
-        unregister_code(KC_Q);
-        unregister_code(KC_W);
-        unregister_code(KC_E);
-        unregister_code(KC_R);
-        combo_enable();
-        layer_on(_COLEMAKDH);
-        layer_off(_PLOVER);
       }
       return false;
     case V_ENTER:  // V on tap, Enter on long press.
