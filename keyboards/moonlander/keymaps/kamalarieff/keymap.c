@@ -44,15 +44,8 @@
 
 // Tap Hold
 #define V_ENTER LT(0, KC_V)
-// #define KEYNAV_LEFT LT(0, KC_R)
-// #define KEYNAV_DOWN LT(0, KC_S)
-// #define KEYNAV_UP LT(0, KC_F)
-// #define KEYNAV_RIGHT LT(0, KC_T)
-
-// #define KEYNAV_LEFT TD(DANCE_11)
-// #define KEYNAV_DOWN TD(DANCE_12)
-// #define KEYNAV_UP TD(DANCE_13)
-// #define KEYNAV_RIGHT TD(DANCE_14)
+#define P_NUMBER LT(0, KC_P)
+#define Q_F12 LT(0, KC_Q)
 
 // Layers
 #define _COLEMAKDH 0
@@ -194,6 +187,10 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
       case TD(DANCE_13):
       case TD(DANCE_14):
         return 110;
+      case V_ENTER:
+      case P_NUMBER:
+      case Q_F12:
+        return 250;
       default:
         return TAPPING_TERM;
     }
@@ -211,11 +208,23 @@ static bool process_tap_or_long_press_key(
   return true;  // Continue default handling.
 }
 
+// https://getreuer.info/posts/keyboards/triggers/index.html#tap-vs.-long-press
+static bool process_tap_or_long_press_layer_change(
+    keyrecord_t* record, uint16_t long_press_layer) {
+  if (record->tap.count == 0) {  // Key is being held.
+    if (record->event.pressed) {
+      layer_on(long_press_layer);
+    }
+    return false;  // Skip default handling.
+  }
+  return true;  // Continue default handling.
+}
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // colemak-dh base
   [_COLEMAKDH] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   KC_MEH,         DYN_REC_START1,     DYN_REC_START2,   KC_HYPR,             _______,               _______,               _______,             _______,          TO(_GAMING),         
-    KC_LEAD,              KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         KC_LEAD,
+    KC_LEAD,              Q_F12,               KC_W,            KC_F,           P_NUMBER,                  KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         KC_LEAD,
     KC_LEAD,              LGUI_T(KC_A),        LALT_T(KC_R),    CTRL_S,         SHFT_T,                    KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                SHFT_N,                CTRL_E,                LALT_T(KC_I),        LGUI_T(KC_O),     _______,
     KC_LEAD,              KC_Z,                KC_X,            KC_C,           KC_D,                      V_ENTER,                                              KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         _______,
     _______,              _______,             _______,         APP_TAB,        LA_ARROW,                  _______,                                              _______,             LA_NUMBER,             KC_DELETE,             _______,             _______,          _______,
@@ -660,14 +669,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_PLOVER);
       }
       return false;
-    // case KEYNAV_LEFT:
-    //   return process_tap_or_long_press_key(record, S(KC_R));
-    // case KEYNAV_DOWN:
-    //   return process_tap_or_long_press_key(record, S(KC_S));
-    // case KEYNAV_UP:
-    //   return process_tap_or_long_press_key(record, S(KC_F));
-    // case KEYNAV_RIGHT:
-    //   return process_tap_or_long_press_key(record, S(KC_T));
+    case V_ENTER:  // V on tap, Enter on long press.
+      return process_tap_or_long_press_key(record, KC_ENTER);
+    case Q_F12:  // V on tap, Enter on long press.
+      return process_tap_or_long_press_key(record, KC_F12);
+    case P_NUMBER:  // P on tap, Switch to _NUMBER layer on long press.
+      return process_tap_or_long_press_layer_change(record, _NUMBER);
   }
 
   update_oneshot(
