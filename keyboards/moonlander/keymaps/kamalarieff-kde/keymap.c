@@ -52,10 +52,9 @@
 #define _NUMBER 2
 #define _SYMBOL 3
 #define _FN 4
-#define _TMUX 5
-#define _BROWSER 6
-#define _ARROW_LHAND 7
-#define _GAMING 8
+#define _BROWSER 5
+#define _ARROW_LHAND 6
+#define _GAMING 7
 
 #define IDLE_TIMEOUT_MS 1000
 
@@ -73,17 +72,7 @@ enum custom_keycodes {
   OS_CMD,
   CUSTOM_OSM_SHIFT,
   CUSTOM_OSM_CTRL,
-  CUSTOM_OSM_ALT,
-  TMUX_FZF,
-  TMUX_FZF_SESSION,
-  TMUX_SWITCH_SESSION,
-  TMUX_SWITCH_WINDOW,
-  TMUX_ALT_TAB,
-  TMUX_CLOSE_PANE,
-  TMUX_LEFT_PANE,
-  TMUX_DOWN_PANE,
-  TMUX_UP_PANE,
-  TMUX_RIGHT_PANE,
+  CUSTOM_OSM_ALT
 };
 
 enum tap_dance_codes {
@@ -247,15 +236,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F15,               KC_F10,              KC_F1,           KC_F2,          KC_F3,                     KC_PAUSE,                                             _______,             _______,               _______,               _______,             _______,           _______, 
     KC_F14,               KC_F13,              _______,         _______,        KC_APPLICATION,            _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     KC_SPACE,             KC_TAB,              KC_F24,                                                                                                           _______,             _______,               _______
-  ),
-  // tmux layer
-  [_TMUX] = LAYOUT_moonlander(
-    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              _______,             _______,         TMUX_FZF,       _______,                   TMUX_SWITCH_WINDOW,_______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              _______,             _______,         TMUX_FZF_SESSION,_______,                  _______,        _______,            _______,          TMUX_LEFT_PANE,      TMUX_DOWN_PANE,        TMUX_UP_PANE,          TMUX_RIGHT_PANE,     _______,           _______, 
-    _______,              TMUX_ALT_TAB,        TMUX_CLOSE_PANE, _______,        _______,                   TMUX_SWITCH_SESSION,                                  _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
-    _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
   // browser layer
   [_BROWSER] = LAYOUT_moonlander(
@@ -463,56 +443,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
     // https://www.reddit.com/r/olkb/comments/afm9ii/qmk_macro_in_modtap_keys/
-    case TMUX_ALT_TAB:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a") SS_LCTL("a"));
-      }
-      return false;
-    case TMUX_FZF:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a") SS_LSFT("f"));
-      }
-      return false;
-    case TMUX_FZF_SESSION:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a")"s");
-      }
-      return false;
-    case TMUX_CLOSE_PANE:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a")"x");
-      }
-      return false;
-    case TMUX_LEFT_PANE:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a")SS_TAP(X_LEFT));
-      }
-      return false;
-    case TMUX_DOWN_PANE:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a")SS_TAP(X_DOWN));
-      }
-      return false;
-    case TMUX_UP_PANE:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a")SS_TAP(X_UP));
-      }
-      return false;
-    case TMUX_RIGHT_PANE:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a")SS_TAP(X_RIGHT));
-      }
-      return false;
-    case TMUX_SWITCH_SESSION:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a")"v");
-      }
-      return false;
-    case TMUX_SWITCH_WINDOW:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL("a")"b");
-      }
-      return false;
     case SWITCH_APPS:
       if (record->event.pressed) {
           SEND_STRING(SS_LGUI("`"));
