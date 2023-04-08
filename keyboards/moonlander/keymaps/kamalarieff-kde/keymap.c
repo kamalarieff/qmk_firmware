@@ -64,7 +64,11 @@ enum custom_keycodes {
   RIGHT_MONITOR,
   SWITCH_APPS,
   ARROW,
+  FATARROW,
   BRACES,
+  CBRACES,
+  ANGLED_BRACKETS,
+  DQUO,
   PARENS,
   DELETE_BRACES,
   OS_SHFT,
@@ -232,9 +236,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // shifted number layer
   [_SYMBOL] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
-    TO(_COLEMAKDH),       KC_GRAVE,            KC_TILD,         KC_LPRN,        KC_RPRN,                   ARROW,          _______,            _______,          _______,             ARROW,                 BRACES,                PARENS,              KC_DQUO,           _______, 
-    _______,              KC_COLN,             KC_LABK,         KC_LBRACKET,    KC_RBRACKET,               KC_PLUS,        _______,            _______,          _______,             CUSTOM_OSM_SHIFT,      CUSTOM_OSM_CTRL,       CUSTOM_OSM_ALT,      OSM(MOD_LGUI),     _______, 
-    _______,              KC_PIPE,             KC_RABK,         KC_LCBR,        KC_RCBR,                   KC_UNDS,                                              _______,             _______,               _______,               _______,             _______,           _______, 
+    TO(_COLEMAKDH),       KC_GRAVE,            _______,         KC_LPRN,        KC_RPRN,                   ARROW,          _______,            _______,          _______,             ARROW,                 FATARROW,              ANGLED_BRACKETS,     DQUO,           _______, 
+    _______,              KC_COLN,             _______,         KC_LBRACKET,    KC_RBRACKET,               _______,        _______,            _______,          _______,             PARENS,                BRACES,                CBRACES,             _______,     _______, 
+    _______,              KC_LABK,             KC_RABK,         KC_LCBR,        KC_RCBR,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              _______,             _______,                                                                                                          _______,             _______,               _______
   ),
@@ -432,6 +436,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           clear_oneshot_layer_state(ONESHOT_PRESSED);
       }
       return false;
+    case CBRACES:  // Types () and puts cursor between parens.
+      if (record->event.pressed) {
+        SEND_STRING("{}");
+        tap_code(KC_LEFT);  // Move cursor between parens.
+        set_mods(mods);  // Restore mods.
+      } else {
+          clear_oneshot_layer_state(ONESHOT_PRESSED);
+      }
+      return false;
     case ARROW:  // Arrow macro, types -> or =>.
       if (record->event.pressed) {
         if ((mods | oneshot_mods) & MOD_MASK_SHIFT) {  // Is shift held?
@@ -444,6 +457,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       } else {
           clear_oneshot_layer_state(ONESHOT_PRESSED);
+      }
+      return false;
+    case FATARROW:  // Arrow macro, types -> or =>.
+      if (record->event.pressed) {
+        SEND_STRING("=>");
+      }
+      return false;
+    case ANGLED_BRACKETS:  // Arrow macro, types -> or =>.
+      if (record->event.pressed) {
+        SEND_STRING("<>");
+        tap_code(KC_LEFT);  // Move cursor between parens.
+      }
+      return false;
+    case DQUO:  // Arrow macro, types -> or =>.
+      if (record->event.pressed) {
+        SEND_STRING("''");
+        tap_code(KC_LEFT);  // Move cursor between parens.
       }
       return false;
     case DELETE_BRACES:
