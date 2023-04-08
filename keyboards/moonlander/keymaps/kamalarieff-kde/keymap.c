@@ -31,6 +31,7 @@
 // CALLUM mods
 #define LA_ARROW LT(_ARROW,KC_ESCAPE)
 #define LA_NUMBER LT(_NUMBER,KC_ENTER)
+#define LA_SYMBOL LT(_SYMBOL,KC_DELETE)
 
 // Mod Tap
 #define SHFT_T LSFT_T(KC_T)
@@ -92,13 +93,16 @@ enum tap_dance_codes {
 };
 
 enum combos {
-  UY_LEFT_BRACKET,
+  UY_BACKSPACE,
   YQUOTE_RIGHT_BRACKET,
   HCOMMA_SEMICOLON,
   LEFT_BRACKET_RIGHT_BRACKET,
   LEFT_PRN_RIGHT_PRN,
   LEFT_CBR_RIGHT_CBR,
   LEFT_ABK_RIGHT_ABK,
+  WF_ESCAPE,
+  XC_TAB,
+  COMMAPERIOD_ENTER
 };
 
 const uint16_t PROGMEM hcomma_combo[] = {KC_H, KC_COMMA, COMBO_END};
@@ -108,15 +112,21 @@ const uint16_t PROGMEM leftbracket_rightbracket_combo[] = {KC_LBRACKET, KC_RBRAC
 const uint16_t PROGMEM leftprn_rightprn_combo[] = {KC_LPRN, KC_RPRN, COMBO_END};
 const uint16_t PROGMEM leftcbr_rightcbr_combo[] = {KC_LCBR, KC_RCBR, COMBO_END};
 const uint16_t PROGMEM leftabk_rightabk_combo[] = {KC_LABK, KC_RABK, COMBO_END};
+const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
+const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM commaperiod_combo[] = {KC_COMMA, KC_DOT, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
-  [UY_LEFT_BRACKET] = COMBO(uy_combo, KC_LBRACKET),
+  [UY_BACKSPACE] = COMBO(uy_combo, KC_BSPACE),
   [YQUOTE_RIGHT_BRACKET] = COMBO(yquote_combo, KC_RBRACKET),
   [HCOMMA_SEMICOLON] = COMBO(hcomma_combo, KC_SCOLON),
   [LEFT_BRACKET_RIGHT_BRACKET] = COMBO_ACTION(leftbracket_rightbracket_combo),
   [LEFT_PRN_RIGHT_PRN] = COMBO_ACTION(leftprn_rightprn_combo),
   [LEFT_CBR_RIGHT_CBR] = COMBO_ACTION(leftcbr_rightcbr_combo),
   [LEFT_ABK_RIGHT_ABK] = COMBO_ACTION(leftabk_rightabk_combo),
+  [WF_ESCAPE] = COMBO(wf_combo, KC_ESCAPE),
+  [XC_TAB] = COMBO(xc_combo, KC_TAB),
+  [COMMAPERIOD_ENTER] = COMBO(commaperiod_combo, KC_ENTER),
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
@@ -198,7 +208,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,               Q_F12,               KC_W,            KC_F,           P_NUMBER,                  KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         KC_BSPACE,
     OSM(MOD_LCTL),        LALT_T(KC_A),        LGUI_T(KC_R),    CTRL_S,         SHFT_T,                    KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                SHFT_N,                CTRL_E,                LGUI_T(KC_I),        LALT_T(KC_O),     KC_ENTER,
     OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      V_ENTER,                                              KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         _______,
-    KC_LEAD,              _______,             _______,         KC_LALT,        LA_ARROW,                  _______,                                              _______,             LA_NUMBER,             KC_DELETE,             _______,             _______,          TO(_GAMING),
+    KC_LEAD,              _______,             _______,         KC_LALT,        MO(_ARROW),                _______,                                              _______,             MO(_NUMBER),           LA_SYMBOL,             _______,             _______,          TO(_GAMING),
     KC_SPACE,             _______,             _______,                                                                                                          _______,             _______,               KC_BSPACE
   ),
   // arrow keys
