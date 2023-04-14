@@ -26,6 +26,7 @@
 #include "keymap_estonian.h"
 #include "keymap_belgian.h"
 #include "keymap_us_international.h"
+#include "features/achordion.h"
 
 // CALLUM mods
 #define LA_ARROW LT(_ARROW,KC_ESCAPE)
@@ -35,8 +36,11 @@
 // Mod Tap
 #define SHFT_T LSFT_T(KC_T)
 #define CTRL_S LCTL_T(KC_S)
+#define GUI_R LGUI_T(KC_R)
 #define SHFT_N LSFT_T(KC_N)
 #define CTRL_E LCTL_T(KC_E)
+#define GUI_I LGUI_T(KC_I)
+#define ALT_O LALT_T(KC_O)
 
 // Layer Tap
 // #define FN_DEL LT(_FN, KC_DELETE)
@@ -209,8 +213,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAKDH] = LAYOUT_moonlander(
     KC_GRAVE,             KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,           DYN_REC_START1,     DYN_REC_START2,   KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,             TO(_GAMING),         
     KC_TAB,               Q_F12,               KC_W,            KC_F,           P_NUMBER,                  KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         KC_BSPACE,
-    OSM(MOD_LCTL),        LALT_T(KC_A),        LGUI_T(KC_R),    CTRL_S,         SHFT_T,                    KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                SHFT_N,                CTRL_E,                LGUI_T(KC_I),        LALT_T(KC_O),     KC_QUOTE,
-    OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      V_ENTER,                                              KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         KC_ENTER,
+    OSM(MOD_LCTL),        LALT_T(KC_A),        GUI_R,           CTRL_S,         SHFT_T,                    KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                SHFT_N,                CTRL_E,                GUI_I,               ALT_O,            KC_QUOTE,
+    OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         KC_ENTER,
     KC_LEAD,              _______,             _______,         KC_LALT,        MO(_ARROW),                _______,                                              _______,             MO(_NUMBER),           LA_SYMBOL,             _______,             _______,          TO(_GAMING),
     KC_SPACE,             _______,             _______,                                                                                                          _______,             _______,               KC_BSPACE
   ),
@@ -366,6 +370,7 @@ uint16_t key_timer;
 static uint16_t idle_timer = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (!process_achordion(keycode, record)) { return false; }
   // https://www.reddit.com/r/olkb/comments/wrgv05/can_i_prevent_hold_action_for_taphold_keys_unless/#
   // https://getreuer.info/posts/keyboards/triggers/index.html
   idle_timer = (record->event.time + IDLE_TIMEOUT_MS) | 1;
@@ -865,7 +870,49 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 LEADER_EXTERNS();
 
+bool achordion_chord(uint16_t tap_hold_keycode,
+                     keyrecord_t* tap_hold_record,
+                     uint16_t other_keycode,
+                     keyrecord_t* other_record) {
+  // Exceptionally consider the following chords as holds, even though they
+  // are on the same hand in Dvorak.
+  switch (tap_hold_keycode) {
+    case CTRL_S:  // A + U.
+      if (other_keycode == KC_X) { return true; }
+      if (other_keycode == KC_C) { return true; }
+      if (other_keycode == KC_V) { return true; }
+      if (other_keycode == KC_W) { return true; }
+      if (other_keycode == KC_Z) { return true; }
+      if (other_keycode == GUI_R) { return true; }
+      break;
+    case CTRL_E:  // A + U.
+      if (other_keycode == KC_L) { return true; }
+      if (other_keycode == KC_H) { return true; }
+      if (other_keycode == KC_K) { return true; }
+      if (other_keycode == KC_BSPACE) { return true; }
+      break;
+    case GUI_I:  // A + U.
+      if (other_keycode == SHFT_N) { return true; }
+      break;
+    case SHFT_N:  // A + U.
+      if (other_keycode == GUI_I) { return true; }
+      if (other_keycode == ALT_O) { return true; }
+      break;
+    case SHFT_T:  // A + U.
+      if (other_keycode == CTRL_S) { return true; }
+      break;
+  }
+
+  // // Also allow same-hand holds when the other key is in the rows below the
+  // // alphas. I need the `% (MATRIX_ROWS / 2)` because my keyboard is split.
+  // if (other_record->event.key.row % (MATRIX_ROWS / 2) >= 4) { return true; }
+
+  // Otherwise, follow the opposite hands rule.
+  return achordion_opposite_hands(tap_hold_record, other_record);
+}
+
 void matrix_scan_user(void) {
+  achordion_task();
   LEADER_DICTIONARY() {
     leading = false;
     leader_end();
