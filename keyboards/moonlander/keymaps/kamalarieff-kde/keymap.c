@@ -100,8 +100,7 @@ enum tap_dance_codes {
 };
 
 enum combos {
-  UY_BACKSPACE,
-  YQUOTE_RIGHT_BRACKET,
+  YBACKSPACE_QUOTE,
   HCOMMA_SEMICOLON,
   LEFT_BRACKET_RIGHT_BRACKET,
   LEFT_PRN_RIGHT_PRN,
@@ -113,8 +112,7 @@ enum combos {
 };
 
 const uint16_t PROGMEM hcomma_combo[] = {KC_H, KC_COMMA, COMBO_END};
-const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
-const uint16_t PROGMEM yquote_combo[] = {KC_Y, KC_QUOTE, COMBO_END};
+const uint16_t PROGMEM ybackspace_combo[] = {KC_Y, KC_BSPACE, COMBO_END};
 const uint16_t PROGMEM leftbracket_rightbracket_combo[] = {KC_LBRACKET, KC_RBRACKET, COMBO_END};
 const uint16_t PROGMEM leftprn_rightprn_combo[] = {KC_LPRN, KC_RPRN, COMBO_END};
 const uint16_t PROGMEM leftcbr_rightcbr_combo[] = {KC_LCBR, KC_RCBR, COMBO_END};
@@ -124,8 +122,7 @@ const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM commaperiod_combo[] = {KC_COMMA, KC_DOT, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
-  [UY_BACKSPACE] = COMBO(uy_combo, KC_BSPACE),
-  [YQUOTE_RIGHT_BRACKET] = COMBO(yquote_combo, KC_RBRACKET),
+  [YBACKSPACE_QUOTE] = COMBO(ybackspace_combo, KC_QUOTE),
   [HCOMMA_SEMICOLON] = COMBO(hcomma_combo, KC_SCOLON),
   [LEFT_BRACKET_RIGHT_BRACKET] = COMBO_ACTION(leftbracket_rightbracket_combo),
   [LEFT_PRN_RIGHT_PRN] = COMBO_ACTION(leftprn_rightprn_combo),
@@ -211,8 +208,8 @@ static bool process_tap_or_long_press_layer_change(
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // colemak-dh base
   [_COLEMAKDH] = LAYOUT_moonlander(
-    KC_GRAVE,             KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,           DYN_REC_START1,     DYN_REC_START2,   KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,             TO(_GAMING),         
-    KC_TAB,               Q_F12,               KC_W,            KC_F,           P_NUMBER,                  KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_QUOTE,         KC_BSPACE,
+    KC_GRAVE,             KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,           DYN_REC_START1,     DYN_REC_START2,   KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,             TO(_GAMING),
+    KC_TAB,               Q_F12,               KC_W,            KC_F,           P_NUMBER,                  KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_BSPACE,        KC_BSPACE,
     OSM(MOD_LCTL),        LALT_T(KC_A),        GUI_R,           CTRL_S,         SHFT_T,                    KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                SHFT_N,                CTRL_E,                GUI_I,               ALT_O,            KC_QUOTE,
     OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         KC_ENTER,
     KC_LEAD,              _______,             _______,         KC_LALT,        MO(_ARROW),                _______,                                              _______,             MO(_NUMBER),           LA_SYMBOL,             _______,             _______,          TO(_GAMING),
