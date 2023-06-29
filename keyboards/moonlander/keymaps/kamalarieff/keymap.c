@@ -51,6 +51,15 @@ enum custom_keycodes {
   HSV_27_255_255,
   HSV_215_255_128,
   HSV_0_255_255,
+  PLOVER_ON,
+  PLOVER_OFF,
+  LEFT_MONITOR,
+  RIGHT_MONITOR,
+  NEXT_DESKTOP,
+  PREV_DESKTOP,
+  SWITCH_APPS,
+  TOGGL,
+  KEYNAV,
 };
 
 
@@ -72,19 +81,22 @@ enum combos {
   IO_LEFT_BRACKET,
   OP_RIGHT_BRACKET,
   COMMADOT_EQUAL,
-  ZX_SEMICOLON
+  ZX_SEMICOLON,
+  MCOMMA_SEMICOLON
 };
 
 const uint16_t PROGMEM io_combo[] = {KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM op_combo[] = {KC_O, KC_P, COMBO_END};
 const uint16_t PROGMEM commadot_combo[] = {KC_COMMA, KC_DOT, COMBO_END};
 const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM mcomma_combo[] = {KC_M, KC_COMMA, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   [IO_LEFT_BRACKET] = COMBO(io_combo, KC_LBRACKET),
   [OP_RIGHT_BRACKET] = COMBO(op_combo, KC_RBRACKET),
   [COMMADOT_EQUAL] = COMBO(commadot_combo, KC_EQUAL),
-  [ZX_SEMICOLON] = COMBO(zx_combo, KC_SCOLON)
+  [ZX_SEMICOLON] = COMBO(zx_combo, KC_SCOLON),
+  [MCOMMA_SEMICOLON] = COMBO(mcomma_combo, KC_SCOLON)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -94,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRANSPARENT, LGUI_T(KC_A),   LALT_T(KC_S),   LCTL_T(KC_D),   LSFT_T(KC_F),   KC_G,           DYN_REC_STOP,                                                                   DYN_REC_STOP,   KC_H,           RSFT_T(KC_J),   LCTL_T(KC_K),   LALT_T(KC_L),   LGUI_T(KC_QUOTE),KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_Z,           KC_X,           TD(DANCE_0),    TD(DANCE_1),    KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, LALT(KC_RIGHT), LALT(KC_LEFT),  LT(3,KC_ESCAPE),KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, LT(6,KC_DELETE),LALT(KC_LEFT),  LALT(KC_RIGHT), KC_TRANSPARENT, KC_TRANSPARENT, 
-    LT(1,KC_SPACE), LT(2,KC_TAB),   TG(9),                          KC_TRANSPARENT, LT(5,KC_ENTER), LT(4,KC_BSPACE)
+    LT(1,KC_SPACE), LT(2,KC_TAB),   PLOVER_ON,                      KC_TRANSPARENT, LT(5,KC_ENTER), LT(4,KC_BSPACE)
   ),
   [1] = LAYOUT_moonlander(
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
@@ -114,9 +126,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [3] = LAYOUT_moonlander(
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
-    KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO,          KC_BRIGHTNESS_DOWN,KC_BRIGHTNESS_UP,KC_NO,          KC_NO,          KC_TRANSPARENT, 
-    KC_TRANSPARENT, KC_LGUI,        KC_LALT,        KC_LCTRL,       KC_LSHIFT,      KC_NO,          KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_MEDIA_PREV_TRACK,KC_AUDIO_VOL_DOWN,KC_AUDIO_VOL_UP,KC_MEDIA_NEXT_TRACK,KC_NO,          KC_TRANSPARENT, 
-    KC_TRANSPARENT, KC_NO,          KC_RALT,        KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, 
+    KC_TRANSPARENT, PREV_DESKTOP,   KC_NO,          KC_NO,          KC_NO,          NEXT_DESKTOP,   KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO,          KC_BRIGHTNESS_DOWN,KC_BRIGHTNESS_UP,KC_NO,          KC_NO,          KC_TRANSPARENT, 
+    KC_TRANSPARENT, TOGGL,          LEFT_MONITOR,   KC_LCTRL,       RIGHT_MONITOR,  KC_NO,          KC_TRANSPARENT,                                                                 KC_TRANSPARENT, KC_MEDIA_PREV_TRACK,KC_AUDIO_VOL_DOWN,KC_AUDIO_VOL_UP,KC_MEDIA_NEXT_TRACK,KC_NO,          KC_TRANSPARENT, 
+    KC_TRANSPARENT, SWITCH_APPS,    KC_RALT,        KC_NO,          KEYNAV,         KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_AUDIO_MUTE,  KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
     KC_NO,          KC_NO,          KC_NO,                          KC_TRANSPARENT, KC_MEDIA_STOP,  KC_MEDIA_PLAY_PAUSE
   ),
@@ -166,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRANSPARENT, KC_A,           KC_S,           KC_D,           KC_F,           KC_TRANSPARENT, KC_NO,                                                                          KC_ASTG,        KC_TRANSPARENT, KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_QUOTE,       
     KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_TRANSPARENT, KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_TRANSPARENT, 
     KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_C,           KC_V,           KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_N,           KC_M,           KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, 
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
+    KC_TRANSPARENT, KC_TRANSPARENT, PLOVER_OFF,                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT
   ),
   [10] = LAYOUT_moonlander(
     KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_TRANSPARENT, KC_NO,          KC_TRANSPARENT, KC_TRANSPARENT, KC_NO,          
@@ -285,6 +297,72 @@ void rgb_matrix_indicators_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case KEYNAV:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("`"));
+      }
+      return false;
+    case TOGGL:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LGUI("4") SS_LCTL(";s"));
+      }
+      return false;
+    case SWITCH_APPS:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LALT("`"));
+      }
+      return false;
+    case PREV_DESKTOP:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LGUI("["));
+      }
+      return false;
+    case NEXT_DESKTOP:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LGUI("]"));
+      }
+      return false;
+    case LEFT_MONITOR:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL(";s"));
+      }
+      return false;
+    case RIGHT_MONITOR:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL(";f"));
+      }
+      return false;
+    case PLOVER_ON:
+      if (record->event.pressed) {
+        // You have to do this in order to trigger Plover
+        register_code(KC_Q);
+        register_code(KC_W);
+        register_code(KC_E);
+        register_code(KC_R);
+      } else {
+        unregister_code(KC_Q);
+        unregister_code(KC_W);
+        unregister_code(KC_E);
+        unregister_code(KC_R);
+        combo_disable();
+        layer_on(9);
+      }
+      return false;
+    case PLOVER_OFF:
+      if (record->event.pressed) {
+        register_code(KC_Q);
+        register_code(KC_W);
+        register_code(KC_E);
+        register_code(KC_R);
+      } else {
+        unregister_code(KC_Q);
+        unregister_code(KC_W);
+        unregister_code(KC_E);
+        unregister_code(KC_R);
+        combo_enable();
+        layer_off(9);
+      }
+      return false;
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
