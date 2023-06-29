@@ -889,14 +889,20 @@ bool achordion_chord(uint16_t tap_hold_keycode,
       if (other_keycode == KC_BSPACE) { return true; }
       break;
     case GUI_I:  // A + U.
+      if (other_keycode == KC_L) { return true; }
       if (other_keycode == SHFT_N) { return true; }
       break;
     case SHFT_N:  // A + U.
       if (other_keycode == GUI_I) { return true; }
       if (other_keycode == ALT_O) { return true; }
+      if (other_keycode == CTRL_E) { return true; }
+      if (other_keycode == KC_U) { return true; }
       break;
     case SHFT_T:  // A + U.
       if (other_keycode == CTRL_S) { return true; }
+      break;
+    case ALT_O:  // A + U.
+      if (other_keycode == SHFT_N) { return true; }
       break;
   }
 
