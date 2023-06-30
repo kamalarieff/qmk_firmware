@@ -209,7 +209,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // colemak-dh base
   [_COLEMAKDH] = LAYOUT_moonlander(
     KC_GRAVE,             KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,           DYN_REC_START1,     DYN_REC_START2,   KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,             TO(_GAMING),
-    KC_TAB,               Q_F12,               KC_W,            KC_F,           P_NUMBER,                  KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_BSPACE,        KC_BSPACE,
+    KC_TAB,               Q_F12,               KC_W,            KC_F,           P_NUMBER,                  KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_BSPACE,        LCTL(KC_A),
     OSM(MOD_LCTL),        LALT_T(KC_A),        GUI_R,           CTRL_S,         SHFT_T,                    KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                SHFT_N,                CTRL_E,                GUI_I,               ALT_O,            KC_QUOTE,
     OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         KC_ENTER,
     KC_LEAD,              _______,             _______,         KC_LALT,        MO(_ARROW),                _______,                                              _______,             MO(_NUMBER),           LA_SYMBOL,             _______,             _______,          TO(_GAMING),
@@ -280,7 +280,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 
-extern bool g_suspend_state;
 extern rgb_config_t rgb_matrix_config;
 
 void keyboard_post_init_user(void) {
@@ -329,7 +328,7 @@ void set_layer_color(int layer) {
 }
 
 void rgb_matrix_indicators_user(void) {
-  if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
+  if (keyboard_config.disable_layer_led) { return; }
   switch (biton32(layer_state)) {
     case _COLEMAKDH:
       set_layer_color(_COLEMAKDH);
