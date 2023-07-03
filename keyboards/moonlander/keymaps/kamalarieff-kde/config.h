@@ -20,6 +20,7 @@
 
 #define COMBO_COUNT 9
 #define COMBO_TERM 75
+#define COMBO_TERM_PER_COMBO
 
 #define LEADER_NO_TIMEOUT
 
