@@ -218,7 +218,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     OSM(MOD_LCTL),        LALT_T(KC_A),        GUI_R,           CTRL_S,         SHFT_T,                    KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                SHFT_N,                CTRL_E,                GUI_I,               ALT_O,            KC_QUOTE,
     OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         KC_ENTER,
     KC_LEAD,              _______,             _______,         KC_LALT,        MO(_ARROW),                _______,                                              _______,             MO(_NUMBER),           LA_SYMBOL,             _______,             _______,          TO(_GAMING),
-    KC_SPACE,             _______,             _______,                                                                                                          _______,             _______,               KC_BSPACE
+    KC_SPACE,             MO(_DESKTOP),        CAPS_WORD,                                                                                                        CAPS_WORD,           MO(_DESKTOP),          KC_BSPACE
   ),
   // arrow keys
   [_ARROW] = LAYOUT_moonlander(
