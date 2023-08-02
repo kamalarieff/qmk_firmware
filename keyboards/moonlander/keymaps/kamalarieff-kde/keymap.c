@@ -26,7 +26,6 @@
 #include "keymap_estonian.h"
 #include "keymap_belgian.h"
 #include "keymap_us_international.h"
-#include "features/achordion.h"
 
 // CALLUM mods
 #define LA_ARROW LT(_ARROW,KC_ESCAPE)
@@ -59,8 +58,6 @@
 #define _BROWSER 5
 #define _ARROW_LHAND 6
 #define _GAMING 7
-
-#define IDLE_TIMEOUT_MS 1000
 
 enum custom_keycodes {
   LEFT_MONITOR = ML_SAFE_RANGE,
@@ -374,10 +371,6 @@ uint16_t key_timer;
 static uint16_t idle_timer = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (!process_achordion(keycode, record)) { return false; }
-  // https://www.reddit.com/r/olkb/comments/wrgv05/can_i_prevent_hold_action_for_taphold_keys_unless/#
-  // https://getreuer.info/posts/keyboards/triggers/index.html
-  idle_timer = (record->event.time + IDLE_TIMEOUT_MS) | 1;
 
   // Get current mod and one-shot mod states.
   uint8_t mods = get_mods();
@@ -874,55 +867,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 LEADER_EXTERNS();
 
-bool achordion_chord(uint16_t tap_hold_keycode,
-                     keyrecord_t* tap_hold_record,
-                     uint16_t other_keycode,
-                     keyrecord_t* other_record) {
-  // Exceptionally consider the following chords as holds, even though they
-  // are on the same hand in Dvorak.
-  switch (tap_hold_keycode) {
-    case CTRL_S:  // A + U.
-      if (other_keycode == KC_X) { return true; }
-      if (other_keycode == KC_C) { return true; }
-      if (other_keycode == KC_V) { return true; }
-      if (other_keycode == KC_W) { return true; }
-      if (other_keycode == KC_Z) { return true; }
-      if (other_keycode == GUI_R) { return true; }
-      break;
-    case CTRL_E:  // A + U.
-      if (other_keycode == KC_L) { return true; }
-      if (other_keycode == KC_H) { return true; }
-      if (other_keycode == KC_K) { return true; }
-      if (other_keycode == KC_BSPACE) { return true; }
-      break;
-    case GUI_I:  // A + U.
-      if (other_keycode == KC_L) { return true; }
-      if (other_keycode == SHFT_N) { return true; }
-      break;
-    case SHFT_N:  // A + U.
-      if (other_keycode == GUI_I) { return true; }
-      if (other_keycode == ALT_O) { return true; }
-      if (other_keycode == CTRL_E) { return true; }
-      if (other_keycode == KC_U) { return true; }
-      break;
-    case SHFT_T:  // A + U.
-      if (other_keycode == CTRL_S) { return true; }
-      break;
-    case ALT_O:  // A + U.
-      if (other_keycode == SHFT_N) { return true; }
-      break;
-  }
-
-  // // Also allow same-hand holds when the other key is in the rows below the
-  // // alphas. I need the `% (MATRIX_ROWS / 2)` because my keyboard is split.
-  // if (other_record->event.key.row % (MATRIX_ROWS / 2) >= 4) { return true; }
-
-  // Otherwise, follow the opposite hands rule.
-  return achordion_opposite_hands(tap_hold_record, other_record);
-}
-
 void matrix_scan_user(void) {
-  achordion_task();
   LEADER_DICTIONARY() {
     leading = false;
     leader_end();
