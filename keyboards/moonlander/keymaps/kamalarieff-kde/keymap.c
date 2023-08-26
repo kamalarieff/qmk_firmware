@@ -74,10 +74,7 @@ enum custom_keycodes {
   OS_SHFT,
   OS_CTRL,
   OS_ALT,
-  OS_CMD,
-  CUSTOM_OSM_SHIFT,
-  CUSTOM_OSM_CTRL,
-  CUSTOM_OSM_ALT
+  OS_CMD
 };
 
 enum tap_dance_codes {
@@ -468,24 +465,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case RIGHT_MONITOR:
       if (record->event.pressed) {
           SEND_STRING(SS_LCTL(";f"));
-      }
-      return false;
-    case CUSTOM_OSM_SHIFT:
-      if (record->event.pressed) {
-          set_oneshot_mods(MOD_MASK_SHIFT);
-          set_oneshot_layer(_SYMBOL, ONESHOT_START);
-      }
-      return false;
-    case CUSTOM_OSM_CTRL:
-      if (record->event.pressed) {
-          set_oneshot_mods(MOD_MASK_CTRL);
-          set_oneshot_layer(_SYMBOL, ONESHOT_START);
-      }
-      return false;
-    case CUSTOM_OSM_ALT:
-      if (record->event.pressed) {
-          set_oneshot_mods(MOD_MASK_ALT);
-          set_oneshot_layer(_SYMBOL, ONESHOT_START);
       }
       return false;
     case V_ENTER:  // V on tap, Enter on long press.
