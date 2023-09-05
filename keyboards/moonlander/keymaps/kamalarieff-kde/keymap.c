@@ -44,11 +44,6 @@
 // Layer Tap
 // #define FN_DEL LT(_FN, KC_DELETE)
 
-// Tap Hold
-#define V_ENTER LT(0, KC_V)
-#define P_NUMBER LT(0, KC_P)
-#define Q_F12 LT(0, KC_Q)
-
 // Layers
 #define _COLEMAKDH 0
 #define _ARROW 1
@@ -174,37 +169,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         return 180;
       case LA_NUMBER:
         return 110;
-      case V_ENTER:
-      case P_NUMBER:
-      case Q_F12:
-        return 250;
       default:
         return TAPPING_TERM;
     }
-}
-
-// https://getreuer.info/posts/keyboards/triggers/index.html#tap-vs.-long-press
-static bool process_tap_or_long_press_key(
-    keyrecord_t* record, uint16_t long_press_keycode) {
-  if (record->tap.count == 0) {  // Key is being held.
-    if (record->event.pressed) {
-      tap_code16(long_press_keycode);
-    }
-    return false;  // Skip default handling.
-  }
-  return true;  // Continue default handling.
-}
-
-// https://getreuer.info/posts/keyboards/triggers/index.html#tap-vs.-long-press
-static bool process_tap_or_long_press_layer_change(
-    keyrecord_t* record, uint16_t long_press_layer) {
-  if (record->tap.count == 0) {  // Key is being held.
-    if (record->event.pressed) {
-      layer_on(long_press_layer);
-    }
-    return false;  // Skip default handling.
-  }
-  return true;  // Continue default handling.
 }
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -467,12 +434,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_LCTL(";f"));
       }
       return false;
-    case V_ENTER:  // V on tap, Enter on long press.
-      return process_tap_or_long_press_key(record, KC_ENTER);
-    case Q_F12:  // V on tap, Enter on long press.
-      return process_tap_or_long_press_key(record, KC_F12);
-    case P_NUMBER:  // P on tap, Switch to _NUMBER layer on long press.
-      return process_tap_or_long_press_layer_change(record, _NUMBER);
   }
 
   return true;
