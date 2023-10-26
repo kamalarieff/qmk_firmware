@@ -32,6 +32,7 @@
 #define LA_ARROW LT(_ARROW,KC_ESCAPE)
 #define LA_NUMBER LT(_NUMBER,KC_ENTER)
 #define LA_SYMBOL LT(_SYMBOL,KC_DELETE)
+#define LA_DESKTOP LT(_DESKTOP,KC_SPACE)
 
 // Mod Tap
 #define SHFT_T LSFT_T(KC_T)
@@ -52,8 +53,9 @@
 #define _SYMBOL 3
 #define _FN 4
 #define _BROWSER 5
-#define _ARROW_LHAND 6
-#define _GAMING 7
+#define _DESKTOP 6
+#define _ARROW_LHAND 7
+#define _GAMING 8
 
 enum custom_keycodes {
   LEFT_MONITOR = ML_SAFE_RANGE,
@@ -183,7 +185,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     OSM(MOD_LCTL),        LALT_T(KC_A),        GUI_R,           CTRL_S,         KC_T,                      KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                KC_N,                  CTRL_E,                GUI_I,               ALT_O,            LCTL(KC_A),
     OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         KC_ENTER,
     KC_LEAD,              _______,             _______,         KC_LALT,        MO(_ARROW),                _______,                                              _______,             MO(_NUMBER),           LA_SYMBOL,             _______,             _______,          TO(_GAMING),
-    KC_SPACE,             MO(_DESKTOP),        CAPS_WORD,                                                                                                        CAPS_WORD,           MO(_DESKTOP),          KC_LSFT
+    LA_DESKTOP,           MO(_DESKTOP),        CAPS_WORD,                                                                                                        CAPS_WORD,           MO(_DESKTOP),          KC_LSFT
   ),
   // arrow keys
   [_ARROW] = LAYOUT_moonlander(
@@ -229,6 +231,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,              XXXXXXX,             XXXXXXX,         XXXXXXX,        XXXXXXX,                   XXXXXXX,                                              XXXXXXX,             XXXXXXX,               XXXXXXX,               XXXXXXX,             XXXXXXX,           _______, 
     _______,              _______,             XXXXXXX,         XXXXXXX,        _______,                   _______,                                              _______,             _______,               XXXXXXX,               XXXXXXX,             _______,           _______, 
     _______,              _______,             XXXXXXX,                                                                                                          XXXXXXX,             XXXXXXX,               XXXXXXX
+  ),
+  // desktop layer
+  [_DESKTOP] = LAYOUT_moonlander(
+    _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,
+    KC_TAB,               KC_GRAVE,            LALT(KC_7),      LALT(KC_8),     LALT(KC_9),                KC_RABK,        _______,            _______,          XXXXXXX,             XXXXXXX,               _______,               XXXXXXX,             XXXXXXX,           _______,
+    _______,              KC_SCOLON,           LALT(KC_4),      LALT(KC_5),     LALT(KC_6),                KC_EQUAL,       _______,            _______,          XXXXXXX,             XXXXXXX,               XXXXXXX,               XXXXXXX,             XXXXXXX,           _______,
+    _______,              KC_BSLASH,           LALT(KC_1),      LALT(KC_2),     LALT(KC_3),                KC_MINUS,                                             XXXXXXX,             XXXXXXX,               _______,               _______,             _______,           _______,
+    _______,              _______,             _______,         KC_DOT,         KC_0,                      _______,                                              _______,             _______,               _______,               _______,             _______,           XXXXXXX,
+    _______,              KC_MINUS,            _______,                                                                                                          _______,             XXXXXXX,               _______
   ),
   // arrow left hand layer
   [_ARROW_LHAND] = LAYOUT_moonlander(
