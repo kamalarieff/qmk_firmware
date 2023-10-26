@@ -26,6 +26,7 @@
 #include "keymap_estonian.h"
 #include "keymap_belgian.h"
 #include "keymap_us_international.h"
+#include "features/oneshot.h"
 
 // CALLUM mods
 #define LA_ARROW LT(_ARROW,KC_ESCAPE)
@@ -179,16 +180,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAKDH] = LAYOUT_moonlander(
     KC_GRAVE,             KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,           DYN_REC_START1,     DYN_REC_START2,   KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,             TO(_GAMING),
     KC_TAB,               Q_F12,               KC_W,            KC_F,           P_NUMBER,                  KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_BSPACE,        LCTL(KC_A),
-    OSM(MOD_LCTL),        LALT_T(KC_A),        GUI_R,           CTRL_S,         SHFT_T,                    KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                SHFT_N,                CTRL_E,                GUI_I,               ALT_O,            LCTL(KC_A),
+    OSM(MOD_LCTL),        LALT_T(KC_A),        GUI_R,           CTRL_S,         KC_T,                      KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                KC_N,                  CTRL_E,                GUI_I,               ALT_O,            LCTL(KC_A),
     OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         KC_ENTER,
     KC_LEAD,              _______,             _______,         KC_LALT,        MO(_ARROW),                _______,                                              _______,             MO(_NUMBER),           LA_SYMBOL,             _______,             _______,          TO(_GAMING),
-    KC_SPACE,             MO(_DESKTOP),        CAPS_WORD,                                                                                                        CAPS_WORD,           MO(_DESKTOP),          KC_BSPACE
+    KC_SPACE,             MO(_DESKTOP),        CAPS_WORD,                                                                                                        CAPS_WORD,           MO(_DESKTOP),          KC_LSFT
   ),
   // arrow keys
   [_ARROW] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              LALT(KC_Q),          LALT(KC_W),      KC_F,           RIGHT_MONITOR,             XXXXXXX,        _______,            _______,          LCTL(KC_Y),          LSFT(KC_INSERT),       LCTL(KC_INSERT),       _______,             _______,           _______, 
-    _______,              OSM(MOD_LALT),       OSM(MOD_LGUI),   OSM(MOD_LCTL),  OSM(MOD_LSFT),             XXXXXXX,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            _______,           _______, 
+    _______,              OS_ALT,              OS_CMD,          OS_CTRL,        OS_SHFT,                   XXXXXXX,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            _______,           _______,
     _______,              SWITCH_APPS,         LGUI(KC_TAB),    XXXXXXX,        XXXXXXX,                   XXXXXXX,                                              KC_HOME,             KC_PGDOWN,             KC_PGUP,               KC_END,              KC_ENTER,          _______, 
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               KC_DELETE,             _______,             _______,           TO(_COLEMAKDH), 
     KC_SPACE,             XXXXXXX,             XXXXXXX,                                                                                                          _______,             _______,               KC_BSPACE
@@ -197,7 +198,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_NUMBER] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______, 
     KC_TAB,               KC_GRAVE,            KC_7,            KC_8,           KC_9,                      KC_RABK,        _______,            _______,          XXXXXXX,             LCTL(KC_A),            _______,               XXXXXXX,             KC_QUOTE,          _______, 
-    _______,              KC_SCOLON,           KC_4,            KC_5,           KC_6,                      KC_EQUAL,       _______,            _______,          KC_BSPACE,           OSM(MOD_LSFT),         OSM(MOD_LCTL),         OSM(MOD_LGUI),       OSM(MOD_LALT),     _______, 
+    _______,              KC_SCOLON,           KC_4,            KC_5,           KC_6,                      KC_EQUAL,       _______,            _______,          KC_BSPACE,           OS_SHFT,               OS_CTRL,               OS_CMD,              OS_ALT,            _______,
     _______,              KC_BSLASH,           KC_1,            KC_2,           KC_3,                      KC_MINUS,                                             XXXXXXX,             OSL(_SYMBOL),          _______,               OSL(_TMUX),          _______,           _______, 
     _______,              _______,             _______,         _______,        KC_0,                      _______,                                              _______,             _______,               _______,               _______,             _______,           _______, 
     _______,              KC_MINUS,            _______,                                                                                                          _______,             XXXXXXX,               _______
@@ -334,6 +335,37 @@ uint16_t key_timer;
 
 static uint16_t idle_timer = 0;
 
+bool is_oneshot_cancel_key(uint16_t keycode) {
+    switch (keycode) {
+    case LA_ARROW:
+    case LA_NUMBER:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool is_oneshot_ignored_key(uint16_t keycode) {
+    switch (keycode) {
+    case LA_ARROW:
+    case LA_NUMBER:
+    case OS_SHFT:
+    case OS_CTRL:
+    case OS_ALT:
+    case OS_CMD:
+        return true;
+    default:
+        return false;
+    }
+}
+
+oneshot_state os_shft_state = os_up_unqueued;
+oneshot_state os_ctrl_state = os_up_unqueued;
+oneshot_state os_alt_state = os_up_unqueued;
+oneshot_state os_cmd_state = os_up_unqueued;
+
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   // Get current mod and one-shot mod states.
@@ -435,6 +467,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
   }
+
+  update_oneshot(
+      &os_shft_state, KC_LSFT, OS_SHFT,
+      keycode, record
+  );
+  update_oneshot(
+      &os_ctrl_state, KC_LCTL, OS_CTRL,
+      keycode, record
+  );
+  update_oneshot(
+      &os_alt_state, KC_LALT, OS_ALT,
+      keycode, record
+  );
+  update_oneshot(
+      &os_cmd_state, KC_LGUI, OS_CMD,
+      keycode, record
+  );
+
 
   return true;
 }
