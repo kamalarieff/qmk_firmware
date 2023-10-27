@@ -30,7 +30,7 @@
 
 // CALLUM mods
 #define LA_ARROW MO(_ARROW)
-#define LA_NUMBER LT(_NUMBER,KC_ENTER)
+#define LA_NUMBER MO(_NUMBER)
 #define LA_SYMBOL LT(_SYMBOL,KC_DELETE)
 #define LA_DESKTOP LT(_DESKTOP,KC_SPACE)
 
@@ -170,8 +170,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
       case CTRL_E:
       case SHFT_N:
         return 180;
-      case LA_NUMBER:
-        return 110;
       default:
         return TAPPING_TERM;
     }
@@ -184,7 +182,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,               Q_F12,               KC_W,            KC_F,           P_NUMBER,                  KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_BSPACE,        LCTL(KC_A),
     OSM(MOD_LCTL),        LALT_T(KC_A),        GUI_R,           CTRL_S,         KC_T,                      KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                KC_N,                  CTRL_E,                GUI_I,               ALT_O,            LCTL(KC_A),
     OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         KC_ENTER,
-    KC_LEAD,              _______,             _______,         KC_LALT,        LA_ARROW,                _______,                                              _______,             MO(_NUMBER),           LA_SYMBOL,             _______,             _______,          TO(_GAMING),
+    KC_LEAD,              _______,             _______,         KC_LALT,        LA_ARROW,                _______,                                              _______,             LA_NUMBER,           LA_SYMBOL,             _______,             _______,          TO(_GAMING),
     LA_DESKTOP,           MO(_DESKTOP),        CAPS_WORD,                                                                                                        CAPS_WORD,           MO(_DESKTOP),          KC_LSFT
   ),
   // arrow keys
