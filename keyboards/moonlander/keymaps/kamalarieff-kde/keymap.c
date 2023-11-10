@@ -175,11 +175,8 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-      case SHFT_T:
-      case CTRL_S:
-      case CTRL_E:
-      case SHFT_N:
-        return 180;
+      case LA_SYMBOL:
+        return 125;
       default:
         return TAPPING_TERM;
     }
