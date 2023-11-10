@@ -18,7 +18,7 @@
 #define FIRMWARE_VERSION u8"7B4by/mJeJm"
 #define RGB_MATRIX_STARTUP_SPD 60
 
-#define COMBO_COUNT 10
+#define COMBO_COUNT 12
 #define COMBO_TERM 75
 #define COMBO_TERM_PER_COMBO
 
