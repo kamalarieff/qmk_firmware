@@ -100,7 +100,8 @@ enum combos {
   LEFT_ABK_RIGHT_ABK,
   WF_ESCAPE,
   CD_TAB,
-  COMMAPERIOD_ENTER
+  COMMAPERIOD_ENTER,
+  FP_BSPACE,
 };
 
 const uint16_t PROGMEM hcomma_combo[] = {KC_H, KC_COMMA, COMBO_END};
@@ -112,6 +113,7 @@ const uint16_t PROGMEM leftabk_rightabk_combo[] = {KC_LABK, KC_RABK, COMBO_END};
 const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM cd_combo[] = {KC_C, KC_D, COMBO_END};
+const uint16_t PROGMEM fp_combo[] = {KC_F, KC_P, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
   [YBACKSPACE_QUOTE] = COMBO(ybackspace_combo, KC_QUOTE),
@@ -123,6 +125,7 @@ combo_t key_combos[COMBO_COUNT] = {
   [WF_ESCAPE] = COMBO(wf_combo, KC_ESCAPE),
   [CD_TAB] = COMBO(cd_combo, KC_TAB),
   [COMMAPERIOD_ENTER] = COMBO(commaperiod_combo, KC_ENTER),
+  [FP_BSPACE] = COMBO(fp_combo, KC_BSPACE),
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
