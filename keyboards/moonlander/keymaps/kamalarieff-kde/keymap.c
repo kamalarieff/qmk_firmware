@@ -58,17 +58,13 @@
 #define _GAMING 8
 
 enum custom_keycodes {
-  LEFT_MONITOR = ML_SAFE_RANGE,
-  RIGHT_MONITOR,
-  SWITCH_APPS,
-  ARROW,
+  ARROW = ML_SAFE_RANGE,
   FATARROW,
   BRACES,
   CBRACES,
   ANGLED_BRACKETS,
   DQUO,
   PARENS,
-  DELETE_BRACES,
   OS_SHFT,
   OS_CTRL,
   OS_ALT,
@@ -458,28 +454,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         SEND_STRING("''");
         tap_code(KC_LEFT);  // Move cursor between parens.
-      }
-      return false;
-    case DELETE_BRACES:
-      if (record->event.pressed) {
-        tap_code(KC_BSPACE);  // Move cursor between braces.
-        tap_code(KC_DELETE);  // Move cursor between braces.
-      }
-      return false;
-    // https://www.reddit.com/r/olkb/comments/afm9ii/qmk_macro_in_modtap_keys/
-    case SWITCH_APPS:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LGUI("`"));
-      }
-      return false;
-    case LEFT_MONITOR:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL(";s"));
-      }
-      return false;
-    case RIGHT_MONITOR:
-      if (record->event.pressed) {
-          SEND_STRING(SS_LCTL(";f"));
       }
       return false;
   }
