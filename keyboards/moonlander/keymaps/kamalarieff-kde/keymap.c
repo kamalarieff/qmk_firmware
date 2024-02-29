@@ -68,7 +68,8 @@ enum custom_keycodes {
   OS_SHFT,
   OS_CTRL,
   OS_ALT,
-  OS_CMD
+  OS_CMD,
+  CUSTOM_ALT_TAB,
 };
 
 enum tap_dance_codes {
@@ -269,7 +270,7 @@ void keyboard_post_init_user(void) {
 }
 
 // this starts at top left and it moves down
-// the formula is zsa[0] = h / 1.4, zsa[1] = s / 0.39, zsa[2] = v / 0.39 
+// the formula is zsa[0] = h / 1.4, zsa[1] = s / 0.39, zsa[2] = v / 0.39
 // h ranges from [0, 360]
 // s ranges from [0, 100]
 // v ranges from [0, 100]
@@ -376,7 +377,7 @@ oneshot_state os_ctrl_state = os_up_unqueued;
 oneshot_state os_alt_state = os_up_unqueued;
 oneshot_state os_cmd_state = os_up_unqueued;
 
-
+bool is_alt_tab_active = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
@@ -454,6 +455,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         SEND_STRING("''");
         tap_code(KC_LEFT);  // Move cursor between parens.
+      }
+      return false;
+    case CUSTOM_ALT_TAB:
+      if (record->event.pressed) {
+        if (IS_LAYER_ON(_ARROW)) {
+            if (!is_alt_tab_active) {
+                is_alt_tab_active = true;
+                register_code(KC_LALT);
+            }
+            tap_code(KC_TAB);
+        }
       }
       return false;
   }
@@ -865,6 +877,14 @@ void matrix_scan_user(void) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+        case _COLEMAKDH:
+            is_alt_tab_active = false;
+            unregister_code(KC_LALT);
+            break;
+        default:
+            break;
+    }
     state = update_tri_layer_state(state, _ARROW, _NUMBER, _FN);
     return state;
 }
