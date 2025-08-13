@@ -195,7 +195,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   // arrow keys
   [_ARROW] = LAYOUT_moonlander(
-    LALT(KC_F1),          LALT(KC_1),          LALT(KC_2),      LALT(KC_3),     LALT(KC_4),                LALT(KC_5),        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,
+    LALT(KC_F1),          LGUI(KC_1),          LGUI(KC_2),      LGUI(KC_3),     LGUI(KC_4),                LGUI(KC_5),     _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,
     LALT(KC_TAB),         LALT(KC_Q),          LALT(KC_W),      KC_F,           LCTL(KC_A),                XXXXXXX,        _______,            _______,          LCTL(KC_Y),          LSFT(KC_INSERT),       LCTL(KC_INSERT),       _______,             _______,           _______,
     _______,              KC_LGUI,             KC_LALT,         KC_LCTRL,       KC_LSHIFT,                 XXXXXXX,        LALT(KC_8),         _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            _______,           _______,
     _______,              _______,             LCTL(KC_X),      LCTL(KC_C),     XXXXXXX,                   LCTL(KC_V),                                           KC_HOME,             KC_PGDOWN,             KC_PGUP,               KC_END,              KC_ENTER,          _______,
