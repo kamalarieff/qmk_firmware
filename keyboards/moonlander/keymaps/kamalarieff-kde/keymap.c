@@ -43,6 +43,11 @@
 #define GUI_I LGUI_T(KC_I)
 #define ALT_O LALT_T(KC_O)
 
+#define CUSTOM_A LGUI_T(KC_A)
+#define CUSTOM_R LALT_T(KC_R)
+#define CUSTOM_I LALT_T(KC_I)
+#define CUSTOM_O LGUI_T(KC_O)
+
 // Layer Tap
 // #define FN_DEL LT(_FN, KC_DELETE)
 
@@ -183,7 +188,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAKDH] = LAYOUT_moonlander(
     KC_GRAVE,             KC_1,                KC_2,            KC_3,           KC_4,                      KC_5,           DYN_REC_START1,     DYN_REC_START2,   KC_6,                KC_7,                  KC_8,                  KC_9,                KC_0,             TO(_GAMING),
     KC_TAB,               KC_Q,                KC_W,            KC_F,           KC_P,                      KC_B,           DYN_MACRO_PLAY1,    DYN_MACRO_PLAY2,  KC_J,                KC_L,                  KC_U,                  KC_Y,                KC_BSPACE,        KC_BSPACE,
-    OSM(MOD_LCTL),        LALT_T(KC_A),        GUI_R,           CTRL_S,         KC_T,                      KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                KC_N,                  CTRL_E,                GUI_I,               ALT_O,            LCTL(KC_A),
+    OSM(MOD_LCTL),        CUSTOM_A,            CUSTOM_R,        CTRL_S,         KC_T,                      KC_G,           DYN_REC_STOP,       DYN_REC_STOP,     KC_M,                KC_N,                  CTRL_E,                CUSTOM_I,            CUSTOM_O,         LCTL(KC_A),
     OSM(MOD_LSFT),        KC_Z,                KC_X,            KC_C,           KC_D,                      KC_V,                                                 KC_K,                KC_H,                  KC_COMMA,              KC_DOT,              KC_SLASH,         KC_ENTER,
     KC_LEAD,              _______,             LCTL(KC_A),      KC_LALT,        LA_ARROW,                  _______,                                              _______,             LA_NUMBER,             LA_SYMBOL,             _______,             _______,          _______,
     LA_DESKTOP,           _______,             CAPS_WORD,                                                                                                        CAPS_WORD,           _______,               KC_LSFT
@@ -192,7 +197,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ARROW] = LAYOUT_moonlander(
     LALT(KC_F1),          LALT(KC_1),          LALT(KC_2),      LALT(KC_3),     LALT(KC_4),                LALT(KC_5),        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,
     _______,              LALT(KC_Q),          LALT(KC_W),      KC_F,           LCTL(KC_A),                XXXXXXX,        _______,            _______,          LCTL(KC_Y),          LSFT(KC_INSERT),       LCTL(KC_INSERT),       _______,             _______,           _______,
-    _______,              OS_ALT,              OS_CMD,          OS_CTRL,        OS_SHFT,                   XXXXXXX,        _______,            _______,          KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            _______,           _______,
+    _______,              OS_CMD,              OS_ALT,          OS_CTRL,        OS_SHFT,                   XXXXXXX,        LALT(KC_8),            _______,       KC_LEFT,             KC_DOWN,               KC_UP,                 KC_RIGHT,            _______,           _______,
     _______,              _______,             LCTL(KC_X),      LCTL(KC_C),     XXXXXXX,                   LCTL(KC_V),                                           KC_HOME,             KC_PGDOWN,             KC_PGUP,               KC_END,              KC_ENTER,          _______,
     _______,              _______,             _______,         _______,        _______,                   _______,                                              _______,             _______,               _______,               _______,             _______,           TO(_COLEMAKDH),
     KC_SPACE,             XXXXXXX,             XXXXXXX,                                                                                                          _______,             _______,               KC_BSPACE
@@ -201,7 +206,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_NUMBER] = LAYOUT_moonlander(
     _______,              _______,             _______,         _______,        _______,                   _______,        _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,
     KC_TAB,               KC_GRAVE,            KC_7,            KC_8,           KC_9,                      KC_RABK,        _______,            _______,          XXXXXXX,             BRACES,                MO(_SYMBOL),           XXXXXXX,             _______,           _______,
-    _______,              KC_SCOLON,           KC_4,            KC_5,           KC_6,                      KC_EQUAL,       _______,            _______,          KC_BSPACE,           OS_SHFT,               OS_CTRL,               OS_CMD,              OS_ALT,            _______,
+    _______,              KC_SCOLON,           KC_4,            KC_5,           KC_6,                      KC_EQUAL,       _______,            _______,          KC_BSPACE,           OS_SHFT,               OS_CTRL,               OS_ALT,              OS_CMD,            _______,
     _______,              KC_BSLASH,           KC_1,            KC_2,           KC_3,                      KC_MINUS,                                             XXXXXXX,             _______,               _______,               _______,             _______,           _______,
     _______,              _______,             _______,         KC_DOT,         KC_0,                      _______,                                              _______,             _______,               _______,               _______,             _______,           TO(_COLEMAKDH),
     KC_SPACE,             KC_MINUS,            _______,                                                                                                          _______,             XXXXXXX,               _______
@@ -219,7 +224,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_FN] = LAYOUT_moonlander(
     KC_F18,               KC_F19,              KC_F20,          KC_F21,         KC_F22,                    KC_F23,         _______,            _______,          _______,             _______,               _______,               _______,             _______,           _______,
     KC_F17,               KC_F12,              KC_F7,           KC_F8,          KC_F9,                     KC_PSCREEN,     _______,            _______,          _______,             XXXXXXX,               XXXXXXX,               XXXXXXX,             XXXXXXX,           _______,
-    KC_F16,               KC_F11,              KC_F4,           KC_F5,          KC_F6,                     KC_SCROLLLOCK,  _______,            _______,          XXXXXXX,             KC_LSHIFT,             KC_LCTRL,              KC_LGUI,             KC_LALT,           _______,
+    KC_F16,               KC_F11,              KC_F4,           KC_F5,          KC_F6,                     KC_SCROLLLOCK,  _______,            _______,          XXXXXXX,             KC_LSHIFT,             KC_LCTRL,              KC_LALT,             KC_LGUI,           _______,
     KC_F15,               KC_F10,              KC_F1,           KC_F2,          KC_F3,                     KC_PAUSE,                                             _______,             _______,               _______,               _______,             _______,           _______,
     KC_F14,               KC_F13,              _______,         _______,        KC_APPLICATION,            _______,                                              _______,             _______,               _______,               _______,             _______,           _______,
     KC_SPACE,             KC_TAB,              KC_F24,                                                                                                           _______,             _______,               _______
@@ -269,7 +274,7 @@ void keyboard_post_init_user(void) {
 }
 
 // this starts at top left and it moves down
-// the formula is zsa[0] = h / 1.4, zsa[1] = s / 0.39, zsa[2] = v / 0.39 
+// the formula is zsa[0] = h / 1.4, zsa[1] = s / 0.39, zsa[2] = v / 0.39
 // h ranges from [0, 360]
 // s ranges from [0, 100]
 // v ranges from [0, 100]
