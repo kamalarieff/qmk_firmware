@@ -350,8 +350,6 @@ void rgb_matrix_indicators_user(void) {
 
 uint16_t key_timer;
 
-static uint16_t idle_timer = 0;
-
 bool is_oneshot_cancel_key(uint16_t keycode) {
     switch (keycode) {
     case LA_ARROW:
