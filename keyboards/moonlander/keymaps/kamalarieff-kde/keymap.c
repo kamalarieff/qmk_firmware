@@ -32,7 +32,7 @@
 #define LA_ARROW MO(_ARROW)
 #define LA_NUMBER MO(_NUMBER)
 #define LA_SYMBOL LT(_SYMBOL,KC_DELETE)
-#define LA_DESKTOP LT(_DESKTOP,KC_SPACE)
+#define LA_DESKTOP KC_SPACE
 
 // Mod Tap
 #define SHFT_T LSFT_T(KC_T)
